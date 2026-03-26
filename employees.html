@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employees — Bark Ornament Pvt Ltd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+/* =====================================================
+   BARK ORNAMENT PVT LTD — Employee Directory
+   employees.html  ·  All CSS + JS inline
+   ===================================================== */
+:root{
+  --forest:#1a2e1a;--bark:#3d2b1f;--moss:#4a6741;--leaf:#7ab648;
+  --cream:#f5f0e8;--parchment:#ede5d3;--amber:#c8832a;--gold:#e0a93c;
+  --rejected:#8b2e2e;--approved-bg:#eaf3e5;--rejected-bg:#fce8e8;
+  --shadow:0 4px 24px rgba(26,46,26,.12);--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--forest);min-height:100vh}
+
+/* HEADER */
+.header{background:var(--forest);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.28)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{width:42px;height:42px;border-radius:9px;object-fit:cover}
+.brand-name{font-family:'DM Serif Display',serif;color:var(--cream);font-size:19px}
+.brand-sub{color:var(--leaf);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;display:block;margin-top:-2px}
+.header-right{display:flex;align-items:center;gap:10px}
+.date-badge{color:rgba(245,240,232,.55);font-size:12.5px;margin-right:4px}
+.nav-link{color:rgba(245,240,232,.75);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border-radius:8px;border:1.5px solid rgba(245,240,232,.25);transition:all .18s}
+.nav-link:hover{color:var(--leaf);border-color:var(--leaf)}
+.nav-link.active{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--leaf);color:#fff}
+.btn-primary:hover{background:#6ca33e;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--cream);border:1.5px solid rgba(245,240,232,.3)}
+.btn-secondary:hover{border-color:var(--leaf);color:var(--leaf)}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn-cancel{background:var(--parchment);color:var(--forest)}
+.btn-cancel:hover{background:#e0d8c5}
+.btn-edit{background:rgba(224,169,60,.12);color:var(--amber);border:1.5px solid var(--amber)}
+.btn-edit:hover{background:var(--amber);color:#fff}
+.btn-del{background:var(--rejected-bg);color:var(--rejected);border:1.5px solid var(--rejected)}
+.btn-del:hover{background:var(--rejected);color:#fff}
+.btn-dept{background:rgba(122,182,72,.15);color:var(--moss);border:1.5px solid var(--moss)}
+.btn-dept:hover{background:var(--moss);color:#fff}
+
+/* LAYOUT */
+.container{max-width:1200px;margin:0 auto;padding:28px 32px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--forest)}
+.page-subtitle{font-size:13px;color:#888;margin-top:3px}
+
+/* STATS ROW */
+.emp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.estat{background:#fff;border-radius:var(--radius);padding:18px 20px;border-left:4px solid transparent;box-shadow:var(--shadow);transition:transform .18s}
+.estat:hover{transform:translateY(-2px)}
+.estat.e1{border-color:var(--moss);color:var(--moss)}
+.estat.e2{border-color:var(--amber);color:var(--amber)}
+.estat.e3{border-color:var(--leaf);color:var(--leaf)}
+.estat.e4{border-color:var(--bark);color:var(--bark)}
+.estat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:5px}
+.estat-value{font-family:'DM Serif Display',serif;font-size:32px;line-height:1}
+.estat-sub{font-size:11.5px;color:#aaa;margin-top:3px}
+
+/* DEPT PILLS */
+.dept-section{margin-bottom:20px}
+.dept-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:10px}
+.dept-pills{display:flex;flex-wrap:wrap;gap:8px}
+.dept-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:#fff;border:1.5px solid var(--parchment);font-size:12.5px;font-weight:600;color:var(--bark);cursor:pointer;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.dept-pill:hover,.dept-pill.active{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+.dept-pill-count{background:var(--parchment);color:var(--bark);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700}
+.dept-pill:hover .dept-pill-count,.dept-pill.active .dept-pill-count{background:rgba(255,255,255,.2);color:var(--cream)}
+.dept-pill.add-dept{border-style:dashed;color:var(--moss);border-color:var(--moss)}
+.dept-pill.add-dept:hover{background:var(--moss);color:#fff;border-style:solid}
+
+/* PANEL */
+.panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-header{padding:18px 24px;border-bottom:1px solid var(--parchment);display:flex;align-items:center;justify-content:space-between;background:var(--forest);color:var(--cream)}
+.panel-title{font-family:'DM Serif Display',serif;font-size:18px}
+.panel-body{padding:24px}
+
+/* FILTERS */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.filter-select,.filter-input{padding:8px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15s;cursor:pointer}
+.filter-select:focus,.filter-input:focus{border-color:var(--leaf)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead tr{background:var(--parchment)}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#666;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid #f0ebe0;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafaf6}
+.action-btns{display:flex;gap:5px}
+
+/* BADGES */
+.dept-tag{background:rgba(26,46,26,.07);color:var(--bark);padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:600;display:inline-block}
+.id-code{background:var(--parchment);padding:2px 8px;border-radius:5px;font-size:12px;font-family:'Courier New',monospace;font-weight:600}
+
+/* BALANCE INDICATOR */
+.bal-cell{display:flex;align-items:center;gap:8px}
+.progress-bar{height:6px;border-radius:3px;background:rgba(26,46,26,.1);overflow:hidden;width:70px;flex-shrink:0}
+.progress-fill{height:100%;border-radius:3px;background:var(--leaf);transition:width .4s}
+.progress-fill.warn{background:var(--amber)}
+.progress-fill.danger{background:var(--rejected)}
+.rem-num{font-weight:700;font-size:13px}
+.rem-num.ok{color:var(--moss)}
+.rem-num.warn{color:var(--amber)}
+.rem-num.danger{color:var(--rejected)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,46,26,.55);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:16px;padding:32px;width:520px;max-width:92vw;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .2s;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--forest);margin-bottom:6px}
+.modal-sub{font-size:13px;color:#888;margin-bottom:20px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#777;margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--leaf);background:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-hint{font-size:11.5px;color:#aaa;margin-top:4px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.modal-actions-left{display:flex;gap:10px;justify-content:space-between;margin-top:20px}
+.dept-list-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--parchment);border-radius:8px;margin-bottom:8px}
+.dept-list-item:last-child{margin-bottom:0}
+.dept-list-name{font-weight:600;font-size:14px}
+.dept-list-count{font-size:12px;color:#888}
+.btn-xs{padding:4px 10px;font-size:11.5px}
+
+/* CONFIRM MODAL */
+.confirm-text{font-size:14px;line-height:1.6;color:#555;margin-bottom:4px}
+.confirm-warn{background:var(--rejected-bg);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--rejected);margin-top:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--forest);color:var(--cream);padding:14px 22px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:300;transform:translateY(80px);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* RESPONSIVE */
+@media(max-width:900px){.emp-stats{grid-template-columns:1fr 1fr}.table-wrap{font-size:12px}}
+@media(max-width:600px){.container{padding:16px}.header{padding:0 16px}.emp-stats{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="brand">
+    <img class="brand-logo" src="company-logo-1-e1705646120954.jpg" alt="Bark Ornament">
+    <div>
+      <div class="brand-name">Bark Ornament <em style="color:var(--gold);font-style:normal">Pvt Ltd</em></div>
+      <span class="brand-sub">Leave Management System</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="date-badge" id="currentDate"></span>
+    <a class="nav-link" href="index.html">📊 Dashboard</a>
+    <a class="nav-link active" href="employees.html">👥 Employees</a>
+    <button class="btn btn-secondary btn-sm" onclick="openDeptModal()">🏢 Manage Depts</button>
+    <button class="btn btn-primary btn-sm" onclick="openEmpModal()">+ Add Employee</button>
+  </div>
+</header>
+
+<!-- CONTAINER -->
+<div class="container">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">Employee Directory</div>
+      <div class="page-subtitle" id="empCount">Loading…</div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="emp-stats">
+    <div class="estat e1"><div class="estat-label">Total Employees</div><div class="estat-value" id="sEmpTotal">0</div><div class="estat-sub">Active staff</div></div>
+    <div class="estat e2"><div class="estat-label">Departments</div><div class="estat-value" id="sDeptCount">0</div><div class="estat-sub">Teams</div></div>
+    <div class="estat e3"><div class="estat-label">Avg Leave Balance</div><div class="estat-value" id="sAvgBal">0</div><div class="estat-sub">Days remaining</div></div>
+    <div class="estat e4"><div class="estat-label">Total Balance Days</div><div class="estat-value" id="sTotalBal">0</div><div class="estat-sub">Across all staff</div></div>
+  </div>
+
+  <!-- DEPT PILLS -->
+  <div class="dept-section">
+    <div class="dept-section-title">Filter by Department</div>
+    <div class="dept-pills" id="deptPills"></div>
+  </div>
+
+  <!-- EMPLOYEE TABLE PANEL -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Staff List</span>
+      <span style="font-size:12px;opacity:.6" id="filteredCount"></span>
+    </div>
+    <div class="panel-body">
+      <div class="filters">
+        <input type="text" class="filter-input" placeholder="🔍 Search name or ID…" id="searchInput" oninput="renderEmpTable()" style="min-width:200px">
+        <select class="filter-select" id="filterDept" onchange="renderEmpTable()">
+          <option value="">All Departments</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Employee ID</th><th>Name</th><th>Department</th><th>Email</th>
+            <th>Annual Balance</th><th>Used</th><th>Remaining</th><th>Usage</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="empTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT EMPLOYEE MODAL -->
+<div class="modal-overlay" id="empModal">
+  <div class="modal">
+    <div class="modal-title" id="empModalTitle">Add Employee</div>
+    <div class="modal-sub" id="empModalSub">Fill in the details below to add a new team member.</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" class="form-input" id="eName" placeholder="e.g. Amara Silva">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Employee ID *</label>
+        <input type="text" class="form-input" id="eId" placeholder="e.g. EMP006">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Department *</label>
+      <div style="display:flex;gap:8px">
+        <select class="form-select" id="eDept" style="flex:1"></select>
+        <button class="btn btn-sm btn-dept" onclick="quickAddDept()">+ New</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email Address *</label>
+      <input type="email" class="form-input" id="eEmail" placeholder="name@barkornament.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Annual Leave Balance (days)</label>
+      <input type="number" class="form-input" id="eBalance" value="21" min="0" max="365">
+      <div class="form-hint">Default is 21 days per year. This resets each calendar year.</div>
+    </div>
+    <input type="hidden" id="eEditIdx">
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeEmpModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="width:420px">
+    <div class="modal-title">Delete Employee</div>
+    <p class="confirm-text">Are you sure you want to remove <strong id="deleteEmpName">this employee</strong>?</p>
+    <div class="confirm-warn">⚠ All leave records for this employee will also be permanently deleted.</div>
+    <input type="hidden" id="deleteIdx">
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-del" onclick="confirmDelete()">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE DEPARTMENTS MODAL -->
+<div class="modal-overlay" id="deptModal">
+  <div class="modal" style="width:460px">
+    <div class="modal-title">Manage Departments</div>
+    <div class="modal-sub">Add or remove departments. Departments in use cannot be deleted.</div>
+    <!-- Add new dept -->
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <input type="text" class="form-input" id="newDeptName" placeholder="New department name…" style="flex:1">
+      <button class="btn btn-primary" onclick="addDepartment()">+ Add</button>
+    </div>
+    <div id="deptListBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeDeptModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   BARK ORNAMENT — EMPLOYEE DIRECTORY  ·  employees.html
+   Shares localStorage with index.html (same origin).
+   ═══════════════════════════════════════════════════
+
+   ▶  GOOGLE SHEET CONNECTION — same GS_URL as index.html
+   Paste your Web App URL below. On load, sheet is pulled.
+   Every employee add/edit/delete pushes silently.
+   ═══════════════════════════════════════════════════ */
+var GS_URL = ''; // ← SAME URL AS index.html
+
+/* ── DEFAULT DATA ── */
+var _defaultEmp = [
+  {id:'EMP001',name:'Amara Silva',      dept:'Design',    email:'amara@barkornament.com',   balance:21},
+  {id:'EMP002',name:'Rohan Perera',     dept:'Operations',email:'rohan@barkornament.com',   balance:21},
+  {id:'EMP003',name:'Nisha Fernando',   dept:'Sales',     email:'nisha@barkornament.com',   balance:21},
+  {id:'EMP004',name:'Kasun Mendis',     dept:'HR',        email:'kasun@barkornament.com',   balance:21},
+  {id:'EMP005',name:'Dilani Wijesinghe',dept:'Finance',   email:'dilani@barkornament.com',  balance:21},
+];
+var _defaultLeaves=[
+  {empId:'EMP001',type:'Sick',  start:'2025-01-10',end:'2025-01-11',days:2,reason:'Fever',          status:'Approved',applied:'2025-01-09',comment:''},
+  {empId:'EMP002',type:'Annual',start:'2025-02-03',end:'2025-02-07',days:5,reason:'Family vacation',status:'Approved',applied:'2025-01-28',comment:''},
+  {empId:'EMP003',type:'Casual',start:'2025-02-20',end:'2025-02-20',days:1,reason:'Personal work',  status:'Rejected',applied:'2025-02-19',comment:'Busy period'},
+  {empId:'EMP004',type:'Sick',  start:'2025-03-05',end:'2025-03-06',days:2,reason:'Medical checkup',status:'Approved',applied:'2025-03-04',comment:''},
+  {empId:'EMP005',type:'Annual',start:'2025-04-14',end:'2025-04-18',days:5,reason:'Holiday trip',   status:'Pending', applied:'2025-04-10',comment:''},
+  {empId:'EMP001',type:'Casual',start:'2025-04-22',end:'2025-04-22',days:1,reason:'',               status:'Pending', applied:'2025-04-21',comment:''},
+  {empId:'EMP002',type:'Sick',  start:'2025-05-01',end:'2025-05-02',days:2,reason:'Cold',           status:'Approved',applied:'2025-04-30',comment:''},
+  {empId:'EMP003',type:'Annual',start:'2025-06-10',end:'2025-06-14',days:5,reason:'',               status:'Pending', applied:'2025-06-08',comment:''},
+];
+var _defaultDepts=['Design','Operations','Sales','HR','Finance'];
+
+/* ── STATE ── */
+var employees=[],leaves=[],departments=[];
+var activeDeptFilter='';
+
+/* ── STORAGE ── */
+function loadLocal(){
+  try{
+    var e=localStorage.getItem('bo_emp'),l=localStorage.getItem('bo_leaves'),d=localStorage.getItem('bo_depts');
+    employees  =e?JSON.parse(e):JSON.parse(JSON.stringify(_defaultEmp));
+    leaves     =l?JSON.parse(l):JSON.parse(JSON.stringify(_defaultLeaves));
+    departments=d?JSON.parse(d):_defaultDepts.slice();
+  }catch(_){
+    employees=JSON.parse(JSON.stringify(_defaultEmp));
+    leaves=JSON.parse(JSON.stringify(_defaultLeaves));
+    departments=_defaultDepts.slice();
+  }
+}
+function persist(){
+  try{
+    localStorage.setItem('bo_emp',JSON.stringify(employees));
+    localStorage.setItem('bo_leaves',JSON.stringify(leaves));
+    localStorage.setItem('bo_depts',JSON.stringify(departments));
+  }catch(_){}
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',function(){
+  loadLocal();
+  document.getElementById('currentDate').textContent=
+    new Date().toLocaleDateString('en-LK',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  rebuildDeptDropdowns();
+  renderAll();
+  if(GS_URL) gsSync();
+});
+
+function renderAll(){
+  renderDeptPills();
+  renderEmpTable();
+  renderStats();
+  updateDeptList();
+}
+
+/* ── STATS ── */
+function renderStats(){
+  document.getElementById('sEmpTotal').textContent=employees.length;
+  document.getElementById('sDeptCount').textContent=departments.length;
+  var totRem=employees.reduce(function(sum,emp){
+    var used=leaves.filter(function(l){return l.empId===emp.id&&l.status==='Approved';})
+                   .reduce(function(s,l){return s+l.days;},0);
+    return sum+(emp.balance-used);
+  },0);
+  document.getElementById('sTotalBal').textContent=totRem;
+  document.getElementById('sAvgBal').textContent=
+    employees.length?Math.round(totRem/employees.length):0;
+}
+
+/* ── DEPT PILLS ── */
+function renderDeptPills(){
+  var pills=document.getElementById('deptPills');
+  var allCount=employees.length;
+  var html='<span class="dept-pill'+(activeDeptFilter===''?' active':'')+'" onclick="setDeptFilter(\'\')">'+
+    'All <span class="dept-pill-count">'+allCount+'</span></span>';
+  departments.forEach(function(d){
+    var cnt=employees.filter(function(e){return e.dept===d;}).length;
+    html+='<span class="dept-pill'+(activeDeptFilter===d?' active':'')+'" onclick="setDeptFilter(\''+d+'\')">'+
+      d+' <span class="dept-pill-count">'+cnt+'</span></span>';
+  });
+  html+='<span class="dept-pill add-dept" onclick="openDeptModal()">+ Add Department</span>';
+  pills.innerHTML=html;
+}
+function setDeptFilter(dept){
+  activeDeptFilter=dept;
+  document.getElementById('filterDept').value=dept;
+  renderAll();
+}
+
+/* ── EMPLOYEE TABLE ── */
+function renderEmpTable(){
+  var search=document.getElementById('searchInput').value.toLowerCase();
+  var fDept=document.getElementById('filterDept').value||activeDeptFilter;
+  var filtered=employees.filter(function(emp){
+    if(search&&!emp.name.toLowerCase().includes(search)&&!emp.id.toLowerCase().includes(search))return false;
+    if(fDept&&emp.dept!==fDept)return false;
+    return true;
+  });
+  document.getElementById('filteredCount').textContent=filtered.length+' employee'+(filtered.length!==1?'s':'');
+  document.getElementById('empCount').textContent=employees.length+' employee'+(employees.length!==1?'s':', ')+' across '+departments.length+' department'+(departments.length!==1?'s':'');
+  var tbody=document.getElementById('empTableBody');
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:32px;color:#bbb">No employees found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=filtered.map(function(emp){
+    var idx=employees.indexOf(emp);
+    var used=leaves.filter(function(l){return l.empId===emp.id&&l.status==='Approved';})
+                   .reduce(function(s,l){return s+l.days;},0);
+    var rem=emp.balance-used;
+    var pct=Math.min(100,emp.balance>0?Math.round((used/emp.balance)*100):0);
+    var cls=pct>70?'danger':pct>40?'warn':'';
+    var remCls=rem<5?'danger':rem<10?'warn':'ok';
+    return'<tr>'+
+      '<td><span class="id-code">'+emp.id+'</span></td>'+
+      '<td><strong>'+emp.name+'</strong></td>'+
+      '<td><span class="dept-tag">'+emp.dept+'</span></td>'+
+      '<td style="font-size:12.5px;color:#555">'+emp.email+'</td>'+
+      '<td style="font-weight:600;text-align:center">'+emp.balance+'</td>'+
+      '<td style="text-align:center">'+used+'</td>'+
+      '<td><div class="bal-cell"><span class="rem-num '+remCls+'">'+rem+'</span></div></td>'+
+      '<td><div class="bal-cell"><div class="progress-bar"><div class="progress-fill '+cls+'" style="width:'+pct+'%"></div></div><span style="font-size:11.5px;color:#888">'+pct+'%</span></div></td>'+
+      '<td><div class="action-btns">'+
+        '<button class="btn btn-sm btn-edit" onclick="openEmpModal('+idx+')">✎ Edit</button>'+
+        '<button class="btn btn-sm btn-del"  onclick="openDeleteModal('+idx+')">✕</button>'+
+      '</div></td>'+
+    '</tr>';
+  }).join('');
+}
+
+/* ── REBUILD DEPT DROPDOWNS ── */
+function rebuildDeptDropdowns(){
+  var opts=departments.map(function(d){return'<option>'+d+'</option>';}).join('');
+  document.getElementById('eDept').innerHTML=opts;
+  document.getElementById('filterDept').innerHTML=
+    '<option value="">All Departments</option>'+
+    departments.map(function(d){return'<option>'+d+'</option>';}).join('');
+}
+
+/* ── EMPLOYEE MODAL ── */
+function openEmpModal(editIdx){
+  document.getElementById('empModal').classList.add('active');
+  rebuildDeptDropdowns();
+  if(editIdx!==undefined){
+    var emp=employees[editIdx];
+    document.getElementById('empModalTitle').textContent='Edit Employee';
+    document.getElementById('empModalSub').textContent='Update details for '+emp.name+'.';
+    document.getElementById('eName').value=emp.name;
+    document.getElementById('eId').value=emp.id;
+    document.getElementById('eId').readOnly=true;
+    document.getElementById('eId').style.opacity='.5';
+    document.getElementById('eDept').value=emp.dept;
+    document.getElementById('eEmail').value=emp.email;
+    document.getElementById('eBalance').value=emp.balance;
+    document.getElementById('eEditIdx').value=editIdx;
+  }else{
+    document.getElementById('empModalTitle').textContent='Add Employee';
+    document.getElementById('empModalSub').textContent='Fill in the details below to add a new team member.';
+    ['eName','eId','eEmail'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('eId').readOnly=false;
+    document.getElementById('eId').style.opacity='1';
+    document.getElementById('eBalance').value=21;
+    document.getElementById('eEditIdx').value='';
+    if(activeDeptFilter)document.getElementById('eDept').value=activeDeptFilter;
+  }
+}
+function closeEmpModal(){document.getElementById('empModal').classList.remove('active');}
+
+function quickAddDept(){
+  var name=prompt('New department name:');
+  if(!name||!name.trim())return;
+  name=name.trim();
+  if(departments.includes(name)){showToast('⚠️','Already exists');return;}
+  departments.push(name);
+  persist();
+  rebuildDeptDropdowns();
+  document.getElementById('eDept').value=name;
+  renderAll();
+  showToast('✅','"'+name+'" department added');
+}
+
+function saveEmployee(){
+  var name=document.getElementById('eName').value.trim();
+  var id=document.getElementById('eId').value.trim().toUpperCase();
+  var dept=document.getElementById('eDept').value;
+  var email=document.getElementById('eEmail').value.trim();
+  var balance=parseInt(document.getElementById('eBalance').value)||21;
+  var ei=document.getElementById('eEditIdx').value;
+  if(!name||!id||!email||!dept){showToast('⚠️','Fill all required fields');return;}
+  if(ei===''&&employees.find(function(e){return e.id===id;})){showToast('⚠️','Employee ID already exists');return;}
+  var rec={id:id,name:name,dept:dept,email:email,balance:balance};
+  if(ei!==''){employees[parseInt(ei)]=rec;}else{employees.push(rec);}
+  persist();
+  closeEmpModal();
+  rebuildDeptDropdowns();
+  renderAll();
+  showToast('✅',name+(ei!==''?' updated':' added'));
+  gsPush({action:'updateEmployee',data:rec});
+}
+
+/* ── DELETE MODAL ── */
+function openDeleteModal(idx){
+  document.getElementById('deleteEmpName').textContent=employees[idx].name;
+  document.getElementById('deleteIdx').value=idx;
+  document.getElementById('deleteModal').classList.add('active');
+}
+function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('active');}
+function confirmDelete(){
+  var idx=parseInt(document.getElementById('deleteIdx').value);
+  var emp=employees[idx];
+  var empId=emp.id;
+  gsPush({action:'deleteEmployee',empId:empId});
+  leaves=leaves.filter(function(l){return l.empId!==empId;});
+  employees.splice(idx,1);
+  persist();
+  closeDeleteModal();
+  renderAll();
+  showToast('🗑️',emp.name+' removed');
+}
+
+/* ── DEPT MODAL ── */
+function openDeptModal(){
+  document.getElementById('newDeptName').value='';
+  updateDeptList();
+  document.getElementById('deptModal').classList.add('active');
+}
+function closeDeptModal(){document.getElementById('deptModal').classList.remove('active');}
+
+function updateDeptList(){
+  var body=document.getElementById('deptListBody');
+  if(!body)return;
+  body.innerHTML=departments.map(function(d,idx){
+    var cnt=employees.filter(function(e){return e.dept===d;}).length;
+    var canDel=cnt===0;
+    return'<div class="dept-list-item">'+
+      '<div><div class="dept-list-name">'+d+'</div><div class="dept-list-count">'+cnt+' employee'+(cnt!==1?'s':'')+'</div></div>'+
+      (canDel?'<button class="btn btn-xs btn-del" onclick="removeDept('+idx+')">✕ Remove</button>':
+              '<span style="font-size:12px;color:#bbb">In use</span>')+
+    '</div>';
+  }).join('');
+}
+
+function addDepartment(){
+  var name=document.getElementById('newDeptName').value.trim();
+  if(!name){showToast('⚠️','Enter a department name');return;}
+  if(departments.includes(name)){showToast('⚠️','"'+name+'" already exists');return;}
+  departments.push(name);
+  persist();
+  document.getElementById('newDeptName').value='';
+  rebuildDeptDropdowns();
+  renderAll();
+  updateDeptList();
+  showToast('✅','"'+name+'" added');
+}
+
+function removeDept(idx){
+  var name=departments[idx];
+  departments.splice(idx,1);
+  persist();
+  rebuildDeptDropdowns();
+  renderAll();
+  updateDeptList();
+  showToast('🗑️','"'+name+'" removed');
+}
+
+/* ── GOOGLE SHEET ── */
+function gsSync(){
+  fetch(GS_URL+'?action=getAll')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var changed=false;
+      if(data.employees&&data.employees.length){employees=data.employees;changed=true;}
+      if(data.leaves&&data.leaves.length){leaves=data.leaves;changed=true;}
+      if(data.departments&&data.departments.length){departments=data.departments;changed=true;}
+      if(changed){persist();rebuildDeptDropdowns();renderAll();showToast('🔄','Synced from Google Sheet');}
+    })
+    .catch(function(){});
+}
+function gsPush(payload){
+  if(!GS_URL)return;
+  fetch(GS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});
+}
+
+/* ── HELPERS ── */
+function showToast(icon,msg){
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastMsg').textContent=msg;
+  var t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+document.addEventListener('click',function(e){
+  if(e.target.id==='empModal'||e.target.id==='deleteModal'||e.target.id==='deptModal')
+    e.target.classList.remove('active');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave Management — Bark Ornament Pvt Ltd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+/* =====================================================
+   BARK ORNAMENT PVT LTD — Leave Management Dashboard
+   index.html  ·  All CSS + JS inline
+   ===================================================== */
+:root{
+  --forest:#1a2e1a;--bark:#3d2b1f;--moss:#4a6741;--leaf:#7ab648;
+  --cream:#f5f0e8;--parchment:#ede5d3;--amber:#c8832a;--gold:#e0a93c;
+  --rejected:#8b2e2e;--pending-bg:#fdf3e3;--approved-bg:#eaf3e5;--rejected-bg:#fce8e8;
+  --shadow:0 4px 24px rgba(26,46,26,.12);--radius:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--forest);min-height:100vh}
+
+/* HEADER */
+.header{background:var(--forest);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.28)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{width:42px;height:42px;border-radius:9px;object-fit:cover}
+.brand-name{font-family:'DM Serif Display',serif;color:var(--cream);font-size:19px}
+.brand-sub{color:var(--leaf);font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;display:block;margin-top:-2px}
+.header-right{display:flex;align-items:center;gap:10px}
+.date-badge{color:rgba(245,240,232,.55);font-size:12.5px;margin-right:4px}
+.nav-link{color:rgba(245,240,232,.75);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border-radius:8px;border:1.5px solid rgba(245,240,232,.25);transition:all .18s}
+.nav-link:hover{color:var(--leaf);border-color:var(--leaf)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--leaf);color:#fff}
+.btn-primary:hover{background:#6ca33e;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--cream);border:1.5px solid rgba(245,240,232,.3)}
+.btn-secondary:hover{border-color:var(--leaf);color:var(--leaf)}
+.btn-sm{padding:6px 13px;font-size:12px}
+.btn-cancel{background:var(--parchment);color:var(--forest)}
+.btn-cancel:hover{background:#e0d8c5}
+.btn-approve{background:var(--approved-bg);color:var(--moss);border:1.5px solid var(--moss)}
+.btn-approve:hover{background:var(--moss);color:#fff}
+.btn-reject{background:var(--rejected-bg);color:var(--rejected);border:1.5px solid var(--rejected)}
+.btn-reject:hover{background:var(--rejected);color:#fff}
+.btn-edit{background:rgba(224,169,60,.12);color:var(--amber);border:1.5px solid var(--amber)}
+.btn-edit:hover{background:var(--amber);color:#fff}
+
+/* LAYOUT */
+.container{max-width:1380px;margin:0 auto;padding:28px 32px}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:var(--radius);padding:20px 22px;border-left:4px solid transparent;box-shadow:var(--shadow);transition:transform .18s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card.total   {border-color:var(--moss);   color:var(--moss)}
+.stat-card.pending {border-color:var(--amber);  color:var(--amber)}
+.stat-card.approved{border-color:var(--leaf);   color:var(--leaf)}
+.stat-card.rejected{border-color:var(--rejected);color:var(--rejected)}
+.stat-card.balance {border-color:var(--bark);   color:var(--bark)}
+.stat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:6px}
+.stat-value{font-family:'DM Serif Display',serif;font-size:36px;line-height:1}
+.stat-sub{font-size:12px;color:#aaa;margin-top:4px}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1fr 340px;gap:24px}
+
+/* PANEL */
+.panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-header{padding:18px 24px;border-bottom:1px solid var(--parchment);display:flex;align-items:center;justify-content:space-between;background:var(--forest);color:var(--cream)}
+.panel-title{font-family:'DM Serif Display',serif;font-size:18px}
+.panel-body{padding:24px}
+
+/* FILTERS */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.filter-select,.filter-input{padding:8px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15s;cursor:pointer}
+.filter-select:focus,.filter-input:focus{border-color:var(--leaf)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead tr{background:var(--parchment)}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#666;white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid #f0ebe0;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafaf6}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge-pending{background:var(--pending-bg);color:var(--amber)}
+.badge-approved{background:var(--approved-bg);color:var(--moss)}
+.badge-rejected{background:var(--rejected-bg);color:var(--rejected)}
+.leave-type{background:rgba(74,103,65,.1);color:var(--moss);padding:3px 9px;border-radius:6px;font-size:11.5px;font-weight:600}
+.dept-tag{background:rgba(26,46,26,.07);color:var(--bark);padding:2px 8px;border-radius:5px;font-size:11.5px;font-weight:600}
+.action-btns{display:flex;gap:5px}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:20px}
+.emp-card{background:var(--parchment);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.emp-card:last-child{margin-bottom:0}
+.emp-name{font-weight:600;font-size:13.5px}
+.emp-dept{font-size:11.5px;color:#888;margin-top:2px}
+.emp-leaves{text-align:right}
+.leaves-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--moss)}
+.leaves-label{font-size:11px;color:#999}
+.progress-bar{height:6px;border-radius:3px;background:rgba(26,46,26,.12);overflow:hidden;width:80px;margin-top:5px}
+.progress-fill{height:100%;border-radius:3px;background:var(--leaf);transition:width .4s}
+.progress-fill.warn{background:var(--amber)}
+.progress-fill.danger{background:var(--rejected)}
+
+/* ACTIVITY */
+.activity-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #f0ebe0}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:10px;height:10px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.dot-approved{background:var(--leaf)}.dot-rejected{background:var(--rejected)}.dot-pending{background:var(--amber)}
+.activity-text{font-size:13px}
+.activity-time{font-size:11px;color:#aaa;margin-top:2px}
+
+/* YEAR NAV */
+.year-nav{display:flex;align-items:center;gap:6px}
+.yn-btn{background:none;border:none;color:rgba(245,240,232,.7);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;transition:color .15s}
+.yn-btn:hover{color:var(--leaf)}
+.yn-label{color:rgba(245,240,232,.8);font-size:12.5px;font-weight:600;min-width:38px;text-align:center}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,46,26,.55);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:16px;padding:32px;width:500px;max-width:92vw;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .2s;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--forest);margin-bottom:20px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#777;margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--leaf);background:#fff}
+.form-textarea{resize:vertical;min-height:70px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.days-preview{font-size:12px;color:var(--leaf);font-weight:700;margin-top:4px;min-height:16px}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--forest);color:var(--cream);padding:14px 22px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:300;transform:translateY(80px);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* PRINT */
+@media print{
+  .header,.filters,.action-btns,.btn,.sidebar,.modal-overlay,.toast{display:none!important}
+  body{background:#fff}.container{padding:0}.main-grid{grid-template-columns:1fr}
+  .panel{box-shadow:none;border:1px solid #ddd}.print-header{display:block!important}
+  table{font-size:11px}th,td{padding:7px 9px}
+  @page{margin:15mm;size:A4 landscape}
+}
+.print-header{display:none;margin-bottom:20px}
+.print-header h2{font-family:'DM Serif Display',serif;font-size:20px}
+.print-header p{font-size:12px;color:#666;margin-top:4px}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.stats-row{grid-template-columns:repeat(3,1fr)}.main-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.container{padding:16px}.stats-row{grid-template-columns:1fr 1fr}.header{padding:0 16px}}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="brand">
+    <img class="brand-logo" src="company-logo-1-e1705646120954.jpg" alt="Bark Ornament">
+    <div>
+      <div class="brand-name">Bark Ornament <em style="color:var(--gold);font-style:normal">Pvt Ltd</em></div>
+      <span class="brand-sub">Leave Management System</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="date-badge" id="currentDate"></span>
+    <a class="nav-link" href="employees.html">👥 Employees</a>
+    <button class="btn btn-secondary btn-sm" onclick="printDashboard()">🖨 Print</button>
+    <button class="btn btn-secondary btn-sm" onclick="exportCSV()">⬇ CSV</button>
+    <button class="btn btn-primary btn-sm" onclick="openLeaveModal()">+ New Leave</button>
+  </div>
+</header>
+
+<!-- CONTAINER -->
+<div class="container">
+  <div class="print-header" id="printHeader">
+    <h2>Bark Ornament Pvt Ltd — Leave Report</h2>
+    <p id="printMeta"></p>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stats-row">
+    <div class="stat-card total">   <div class="stat-label">Total Leaves</div><div class="stat-value" id="statTotal">0</div><div class="stat-sub">All records</div></div>
+    <div class="stat-card pending"> <div class="stat-label">Pending</div>     <div class="stat-value" id="statPending">0</div><div class="stat-sub">Awaiting approval</div></div>
+    <div class="stat-card approved"><div class="stat-label">Approved</div>    <div class="stat-value" id="statApproved">0</div><div class="stat-sub">This year</div></div>
+    <div class="stat-card rejected"><div class="stat-label">Rejected</div>    <div class="stat-value" id="statRejected">0</div><div class="stat-sub">This year</div></div>
+    <div class="stat-card balance"> <div class="stat-label">Avg Balance</div><div class="stat-value" id="statBalance">0</div><div class="stat-sub">Days remaining</div></div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+    <!-- LEAVE LEDGER PANEL -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Leave Ledger</span>
+          <span style="font-size:12px;opacity:.6" id="recordCount"></span>
+        </div>
+        <div class="panel-body">
+          <div class="filters">
+            <input type="text" class="filter-input" placeholder="🔍 Search employee…" id="searchInput" oninput="renderTable()" style="min-width:160px">
+            <select class="filter-select" id="filterStatus" onchange="renderTable()">
+              <option value="">All Status</option>
+              <option>Pending</option><option>Approved</option><option>Rejected</option>
+            </select>
+            <select class="filter-select" id="filterType" onchange="renderTable()">
+              <option value="">All Types</option>
+              <option>Sick</option><option>Casual</option><option>Annual</option>
+              <option>Maternity</option><option>Paternity</option><option>Unpaid</option>
+            </select>
+            <select class="filter-select" id="filterMonth" onchange="renderTable()">
+              <option value="">All Months</option>
+              <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+              <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+              <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+              <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+            </select>
+            <select class="filter-select" id="filterDept" onchange="renderTable()"><option value="">All Departments</option></select>
+            <select class="filter-select" id="filterYear" onchange="renderTable()"><option value="">All Years</option></select>
+            <button class="btn btn-sm" style="background:var(--parchment);color:var(--forest)" onclick="clearFilters()">✕ Clear</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Employee</th><th>Dept</th><th>Type</th>
+                <th>Start</th><th>End</th><th>Days</th>
+                <th>Applied</th><th>Status</th><th>Comment</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="leaveTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Leave Balances</span>
+          <div class="year-nav">
+            <button class="yn-btn" onclick="changeBalYear(-1)">‹</button>
+            <span class="yn-label" id="balYearLabel">2025</span>
+            <button class="yn-btn" onclick="changeBalYear(1)">›</button>
+          </div>
+        </div>
+        <div class="panel-body" id="balanceList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Recent Activity</span></div>
+        <div class="panel-body" id="activityFeed"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT LEAVE MODAL -->
+<div class="modal-overlay" id="leaveModal">
+  <div class="modal">
+    <div class="modal-title" id="leaveModalTitle">New Leave Application</div>
+    <div class="form-group">
+      <label class="form-label">Employee *</label>
+      <select class="form-select" id="fEmployee"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Leave Type *</label>
+        <select class="form-select" id="fType">
+          <option>Sick</option><option>Casual</option><option>Annual</option>
+          <option>Maternity</option><option>Paternity</option><option>Unpaid</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="fStatus">
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Start Date *</label>
+        <input type="date" class="form-input" id="fStart" onchange="autoCalcDays()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Date *</label>
+        <input type="date" class="form-input" id="fEnd" onchange="autoCalcDays()">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Days</label>
+      <input type="number" class="form-input" id="fDays" min="1" placeholder="Auto-calculated from dates">
+      <div class="days-preview" id="daysPreview"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Reason</label>
+      <textarea class="form-textarea" id="fReason" placeholder="Optional reason…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Manager Comment</label>
+      <input type="text" class="form-input" id="fComment" placeholder="Optional…">
+    </div>
+    <input type="hidden" id="fEditIdx">
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeLeaveModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitLeave()">Save Leave</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   BARK ORNAMENT — LEAVE MANAGEMENT  ·  index.html
+   ═══════════════════════════════════════════════════
+
+   ▶  GOOGLE SHEET CONNECTION
+   ──────────────────────────
+   1. Deploy your Google Apps Script (see appscript.js)
+   2. Paste the Web App URL in GS_URL below.
+   3. That's it — every Save/Approve/Reject will push
+      data silently. On page load the sheet is pulled.
+
+   ═══════════════════════════════════════════════════ */
+var GS_URL = ''; // ← PASTE YOUR WEB APP URL HERE
+
+/* ── DEFAULT SEED DATA ── */
+var _defaultEmp = [
+  {id:'EMP001',name:'Amara Silva',      dept:'Design',    email:'amara@barkornament.com',   balance:21},
+  {id:'EMP002',name:'Rohan Perera',     dept:'Operations',email:'rohan@barkornament.com',   balance:21},
+  {id:'EMP003',name:'Nisha Fernando',   dept:'Sales',     email:'nisha@barkornament.com',   balance:21},
+  {id:'EMP004',name:'Kasun Mendis',     dept:'HR',        email:'kasun@barkornament.com',   balance:21},
+  {id:'EMP005',name:'Dilani Wijesinghe',dept:'Finance',   email:'dilani@barkornament.com',  balance:21},
+];
+var _defaultLeaves = [
+  {empId:'EMP001',type:'Sick',  start:'2025-01-10',end:'2025-01-11',days:2,reason:'Fever',          status:'Approved',applied:'2025-01-09',comment:''},
+  {empId:'EMP002',type:'Annual',start:'2025-02-03',end:'2025-02-07',days:5,reason:'Family vacation',status:'Approved',applied:'2025-01-28',comment:''},
+  {empId:'EMP003',type:'Casual',start:'2025-02-20',end:'2025-02-20',days:1,reason:'Personal work',  status:'Rejected',applied:'2025-02-19',comment:'Busy period'},
+  {empId:'EMP004',type:'Sick',  start:'2025-03-05',end:'2025-03-06',days:2,reason:'Medical checkup',status:'Approved',applied:'2025-03-04',comment:''},
+  {empId:'EMP005',type:'Annual',start:'2025-04-14',end:'2025-04-18',days:5,reason:'Holiday trip',   status:'Pending', applied:'2025-04-10',comment:''},
+  {empId:'EMP001',type:'Casual',start:'2025-04-22',end:'2025-04-22',days:1,reason:'',               status:'Pending', applied:'2025-04-21',comment:''},
+  {empId:'EMP002',type:'Sick',  start:'2025-05-01',end:'2025-05-02',days:2,reason:'Cold',           status:'Approved',applied:'2025-04-30',comment:''},
+  {empId:'EMP003',type:'Annual',start:'2025-06-10',end:'2025-06-14',days:5,reason:'',               status:'Pending', applied:'2025-06-08',comment:''},
+];
+var _defaultDepts = ['Design','Operations','Sales','HR','Finance'];
+
+/* ── STATE ── */
+var employees=[], leaves=[], departments=[], balYear=new Date().getFullYear();
+
+/* ── STORAGE ── */
+function loadLocal(){
+  try{
+    var e=localStorage.getItem('bo_emp'),l=localStorage.getItem('bo_leaves'),d=localStorage.getItem('bo_depts');
+    employees  =e?JSON.parse(e):JSON.parse(JSON.stringify(_defaultEmp));
+    leaves     =l?JSON.parse(l):JSON.parse(JSON.stringify(_defaultLeaves));
+    departments=d?JSON.parse(d):_defaultDepts.slice();
+  }catch(_){
+    employees=JSON.parse(JSON.stringify(_defaultEmp));
+    leaves=JSON.parse(JSON.stringify(_defaultLeaves));
+    departments=_defaultDepts.slice();
+  }
+}
+function persist(){
+  try{
+    localStorage.setItem('bo_emp',JSON.stringify(employees));
+    localStorage.setItem('bo_leaves',JSON.stringify(leaves));
+    localStorage.setItem('bo_depts',JSON.stringify(departments));
+  }catch(_){}
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',function(){
+  loadLocal();
+  document.getElementById('currentDate').textContent=
+    new Date().toLocaleDateString('en-LK',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  document.getElementById('balYearLabel').textContent=balYear;
+  rebuildDeptFilter();
+  rebuildYearFilter();
+  rebuildEmpDropdown();
+  renderAll();
+  if(GS_URL) gsSync();
+});
+
+function renderAll(){renderTable();renderStats();renderBalance();renderActivity();}
+
+/* ── DROPDOWNS ── */
+function rebuildDeptFilter(){
+  document.getElementById('filterDept').innerHTML=
+    '<option value="">All Departments</option>'+
+    departments.map(function(d){return'<option>'+d+'</option>';}).join('');
+}
+function rebuildYearFilter(){
+  var yrs={};
+  leaves.forEach(function(l){yrs[new Date(l.start+'T00:00:00').getFullYear()]=1;});
+  yrs[new Date().getFullYear()]=1;
+  document.getElementById('filterYear').innerHTML=
+    '<option value="">All Years</option>'+
+    Object.keys(yrs).sort().reverse().map(function(y){return'<option>'+y+'</option>';}).join('');
+}
+function rebuildEmpDropdown(){
+  document.getElementById('fEmployee').innerHTML=
+    '<option value="">— Select Employee —</option>'+
+    employees.map(function(e){return'<option value="'+e.id+'">'+e.name+' ('+e.id+')</option>';}).join('');
+}
+
+/* ── RENDER TABLE ── */
+function renderTable(){
+  var search=document.getElementById('searchInput').value.toLowerCase();
+  var fStatus=document.getElementById('filterStatus').value;
+  var fType=document.getElementById('filterType').value;
+  var fMonth=document.getElementById('filterMonth').value;
+  var fDept=document.getElementById('filterDept').value;
+  var fYear=document.getElementById('filterYear').value;
+
+  var filtered=leaves.filter(function(l){
+    var emp=getEmp(l.empId);
+    if(!emp)return false;
+    if(search&&!emp.name.toLowerCase().includes(search)&&!l.empId.toLowerCase().includes(search))return false;
+    if(fStatus&&l.status!==fStatus)return false;
+    if(fType&&l.type!==fType)return false;
+    if(fMonth!==''&&new Date(l.start+'T00:00:00').getMonth()!==parseInt(fMonth))return false;
+    if(fDept&&emp.dept!==fDept)return false;
+    if(fYear&&String(new Date(l.start+'T00:00:00').getFullYear())!==fYear)return false;
+    return true;
+  });
+
+  document.getElementById('recordCount').textContent=
+    filtered.length+' record'+(filtered.length!==1?'s':'');
+
+  var tbody=document.getElementById('leaveTableBody');
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:32px;color:#bbb">No records match your filters.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=filtered.map(function(l){
+    var emp=getEmp(l.empId);
+    var idx=leaves.indexOf(l);
+    var st=l.status.toLowerCase();
+    var actions='';
+    if(l.status==='Pending'){
+      actions+='<button class="btn btn-sm btn-approve" onclick="updateStatus('+idx+',\'Approved\')">✓ Approve</button>'+
+               '<button class="btn btn-sm btn-reject"  onclick="updateStatus('+idx+',\'Rejected\')">✕ Reject</button>';
+    }
+    actions+='<button class="btn btn-sm btn-edit" onclick="openLeaveModal('+idx+')">✎</button>';
+    return'<tr>'+
+      '<td><strong>'+(emp?emp.name:l.empId)+'</strong><br><span style="font-size:11px;color:#aaa">'+l.empId+'</span></td>'+
+      '<td><span class="dept-tag">'+(emp?emp.dept:'—')+'</span></td>'+
+      '<td><span class="leave-type">'+l.type+'</span></td>'+
+      '<td>'+fmt(l.start)+'</td>'+
+      '<td>'+fmt(l.end)+'</td>'+
+      '<td><strong>'+l.days+'</strong></td>'+
+      '<td>'+fmt(l.applied)+'</td>'+
+      '<td><span class="badge badge-'+st+'">'+l.status+'</span></td>'+
+      '<td style="font-size:12px;color:#888;max-width:100px">'+(l.comment||'—')+'</td>'+
+      '<td><div class="action-btns">'+actions+'</div></td>'+
+    '</tr>';
+  }).join('');
+}
+function clearFilters(){
+  ['searchInput','filterStatus','filterType','filterMonth','filterDept','filterYear']
+    .forEach(function(id){document.getElementById(id).value='';});
+  renderTable();
+}
+
+/* ── STATS ── */
+function renderStats(){
+  document.getElementById('statTotal').textContent=leaves.length;
+  document.getElementById('statPending').textContent=leaves.filter(function(l){return l.status==='Pending';}).length;
+  document.getElementById('statApproved').textContent=leaves.filter(function(l){return l.status==='Approved';}).length;
+  document.getElementById('statRejected').textContent=leaves.filter(function(l){return l.status==='Rejected';}).length;
+  var rem=employees.map(function(emp){
+    var t=leaves.filter(function(l){return l.empId===emp.id&&l.status==='Approved';})
+               .reduce(function(s,l){return s+l.days;},0);
+    return emp.balance-t;
+  });
+  document.getElementById('statBalance').textContent=
+    rem.length?Math.round(rem.reduce(function(a,b){return a+b;},0)/rem.length):0;
+}
+
+/* ── BALANCE SIDEBAR ── */
+function renderBalance(){
+  document.getElementById('balanceList').innerHTML=employees.map(function(emp){
+    var taken=leaves.filter(function(l){
+      return l.empId===emp.id&&l.status==='Approved'&&
+             new Date(l.start+'T00:00:00').getFullYear()===balYear;
+    }).reduce(function(s,l){return s+l.days;},0);
+    var rem=emp.balance-taken;
+    var pct=Math.min(100,Math.round((taken/emp.balance)*100))||0;
+    var cls=pct>70?'danger':pct>40?'warn':'';
+    return'<div class="emp-card">'+
+      '<div>'+
+        '<div class="emp-name">'+emp.name+'</div>'+
+        '<div class="emp-dept">'+emp.dept+'</div>'+
+        '<div class="progress-bar"><div class="progress-fill '+cls+'" style="width:'+pct+'%"></div></div>'+
+      '</div>'+
+      '<div class="emp-leaves">'+
+        '<div class="leaves-num">'+rem+'</div>'+
+        '<div class="leaves-label">/ '+emp.balance+' days</div>'+
+      '</div></div>';
+  }).join('');
+}
+function changeBalYear(d){
+  balYear+=d;
+  document.getElementById('balYearLabel').textContent=balYear;
+  renderBalance();
+}
+
+/* ── ACTIVITY ── */
+function renderActivity(){
+  document.getElementById('activityFeed').innerHTML=
+    leaves.slice().reverse().slice(0,6).map(function(l){
+      var emp=getEmp(l.empId);
+      var st=l.status.toLowerCase();
+      return'<div class="activity-item">'+
+        '<div class="activity-dot dot-'+st+'"></div>'+
+        '<div>'+
+          '<div class="activity-text"><strong>'+(emp?emp.name.split(' ')[0]:l.empId)+'</strong> applied for '+l.days+'-day '+l.type+' leave</div>'+
+          '<div class="activity-time">'+l.status+' · '+fmt(l.applied)+'</div>'+
+        '</div></div>';
+    }).join('');
+}
+
+/* ── APPROVE / REJECT ── */
+function updateStatus(idx,status){
+  leaves[idx].status=status;
+  persist();
+  renderAll();
+  showToast(status==='Approved'?'✅':'❌','Leave '+status.toLowerCase());
+  gsPush({action:'updateLeave',data:leaves[idx]});
+}
+
+/* ── LEAVE MODAL ── */
+function openLeaveModal(editIdx){
+  document.getElementById('leaveModal').classList.add('active');
+  if(editIdx!==undefined){
+    var l=leaves[editIdx];
+    document.getElementById('leaveModalTitle').textContent='Edit Leave';
+    document.getElementById('fEmployee').value=l.empId;
+    document.getElementById('fType').value=l.type;
+    document.getElementById('fStatus').value=l.status;
+    document.getElementById('fStart').value=l.start;
+    document.getElementById('fEnd').value=l.end;
+    document.getElementById('fDays').value=l.days;
+    document.getElementById('fReason').value=l.reason||'';
+    document.getElementById('fComment').value=l.comment||'';
+    document.getElementById('fEditIdx').value=editIdx;
+    document.getElementById('daysPreview').textContent='';
+  }else{
+    document.getElementById('leaveModalTitle').textContent='New Leave Application';
+    ['fEmployee','fStart','fEnd','fReason','fComment'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('fType').value='Sick';
+    document.getElementById('fStatus').value='Pending';
+    document.getElementById('fDays').value='';
+    document.getElementById('fEditIdx').value='';
+    document.getElementById('daysPreview').textContent='';
+  }
+}
+function closeLeaveModal(){document.getElementById('leaveModal').classList.remove('active');}
+
+function autoCalcDays(){
+  var s=document.getElementById('fStart').value,e=document.getElementById('fEnd').value;
+  if(s&&e&&new Date(e+'T00:00:00')>=new Date(s+'T00:00:00')){
+    var d=Math.round((new Date(e+'T00:00:00')-new Date(s+'T00:00:00'))/86400000)+1;
+    document.getElementById('fDays').value=d;
+    document.getElementById('daysPreview').textContent=d+' day'+(d!==1?'s':'');
+  }
+}
+
+function submitLeave(){
+  var empId=document.getElementById('fEmployee').value;
+  var type=document.getElementById('fType').value;
+  var status=document.getElementById('fStatus').value;
+  var start=document.getElementById('fStart').value;
+  var end=document.getElementById('fEnd').value;
+  var dv=document.getElementById('fDays').value;
+  var reason=document.getElementById('fReason').value.trim();
+  var comment=document.getElementById('fComment').value.trim();
+  var ei=document.getElementById('fEditIdx').value;
+  if(!empId||!start||!end){showToast('⚠️','Please fill all required fields');return;}
+  if(new Date(end+'T00:00:00')<new Date(start+'T00:00:00')){showToast('⚠️','End date before start date');return;}
+  var days=dv?parseInt(dv):Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/86400000)+1;
+  var rec={empId:empId,type:type,start:start,end:end,days:days,reason:reason,
+           status:status,applied:new Date().toISOString().split('T')[0],comment:comment};
+  if(ei!==''){leaves[parseInt(ei)]=rec;}else{leaves.push(rec);}
+  persist();
+  closeLeaveModal();
+  rebuildYearFilter();
+  renderAll();
+  showToast('📋',ei!==''?'Leave updated':'Leave submitted');
+  gsPush({action:'updateLeave',data:rec});
+}
+
+/* ── EXPORT CSV ── */
+function exportCSV(){
+  var h=['Employee Name','Employee ID','Department','Leave Type','Start','End','Days','Reason','Status','Applied','Comment'];
+  var rows=leaves.map(function(l){
+    var emp=getEmp(l.empId);
+    return[emp?emp.name:'',l.empId,emp?emp.dept:'',l.type,l.start,l.end,l.days,l.reason||'',l.status,l.applied,l.comment||''];
+  });
+  var csv=[h].concat(rows).map(function(r){
+    return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"';}).join(',');
+  }).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='bark_leave_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+  showToast('⬇','CSV exported');
+}
+
+/* ── PRINT ── */
+function printDashboard(){
+  var parts=[];
+  var s=document.getElementById('filterStatus').value;
+  var t=document.getElementById('filterType').value;
+  var d=document.getElementById('filterDept').value;
+  var y=document.getElementById('filterYear').value;
+  if(s)parts.push('Status: '+s);if(t)parts.push('Type: '+t);
+  if(d)parts.push('Dept: '+d);if(y)parts.push('Year: '+y);
+  document.getElementById('printMeta').textContent=
+    'Printed '+new Date().toLocaleDateString('en-LK')+
+    (parts.length?' · Filters: '+parts.join(', '):'  ·  All Records')+
+    ' · '+document.getElementById('recordCount').textContent;
+  window.print();
+}
+
+/* ── GOOGLE SHEET SYNC ── */
+function gsSync(){
+  fetch(GS_URL+'?action=getAll')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var changed=false;
+      if(data.employees&&data.employees.length){employees=data.employees;changed=true;}
+      if(data.leaves&&data.leaves.length){leaves=data.leaves;changed=true;}
+      if(data.departments&&data.departments.length){departments=data.departments;changed=true;}
+      if(changed){
+        persist();
+        rebuildDeptFilter();rebuildYearFilter();rebuildEmpDropdown();
+        renderAll();
+        showToast('🔄','Synced from Google Sheet');
+      }
+    })
+    .catch(function(){/* silent — works offline */});
+}
+
+function gsPush(payload){
+  if(!GS_URL)return;
+  fetch(GS_URL,{
+    method:'POST',mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  }).catch(function(){});
+}
+
+/* ── HELPERS ── */
+function getEmp(id){return employees.find(function(e){return e.id===id;});}
+function fmt(d){
+  if(!d)return'—';
+  return new Date(d+'T00:00:00').toLocaleDateString('en-LK',{day:'2-digit',month:'short',year:'numeric'});
+}
+function showToast(icon,msg){
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastMsg').textContent=msg;
+  var t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+document.addEventListener('click',function(e){
+  if(e.target.classList.contains('modal-overlay'))closeLeaveModal();
+});
+</script>
+</body>
+</html>
