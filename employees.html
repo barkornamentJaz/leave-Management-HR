@@ -7,10 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
   <style>
-/* =====================================================
-   BARK ORNAMENT PVT LTD — Employee Directory
-   employees.html  ·  All CSS + JS inline
-   ===================================================== */
 :root{
   --forest:#1a2e1a;--bark:#3d2b1f;--moss:#4a6741;--leaf:#7ab648;
   --cream:#f5f0e8;--parchment:#ede5d3;--amber:#c8832a;--gold:#e0a93c;
@@ -47,6 +43,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--forest
 .btn-del:hover{background:var(--rejected);color:#fff}
 .btn-dept{background:rgba(122,182,72,.15);color:var(--moss);border:1.5px solid var(--moss)}
 .btn-dept:hover{background:var(--moss);color:#fff}
+.btn-print{background:rgba(26,46,26,.08);color:var(--forest);border:1.5px solid rgba(26,46,26,.2)}
+.btn-print:hover{background:var(--forest);color:#fff}
 
 /* LAYOUT */
 .container{max-width:1200px;margin:0 auto;padding:28px 32px}
@@ -96,7 +94,7 @@ th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;letter-spaci
 td{padding:12px 14px;border-bottom:1px solid #f0ebe0;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tbody tr:hover{background:#fafaf6}
-.action-btns{display:flex;gap:5px}
+.action-btns{display:flex;gap:5px;flex-wrap:wrap}
 
 /* BADGES */
 .dept-tag{background:rgba(26,46,26,.07);color:var(--bark);padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:600;display:inline-block}
@@ -141,6 +139,59 @@ tbody tr:hover{background:#fafaf6}
 /* TOAST */
 .toast{position:fixed;bottom:28px;right:28px;background:var(--forest);color:var(--cream);padding:14px 22px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:300;transform:translateY(80px);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .toast.show{transform:translateY(0);opacity:1}
+
+/* ── EMPLOYEE PROFILE SLIP ── */
+.slip-modal{width:720px;max-width:96vw;padding:0}
+.slip-actions{padding:16px 24px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--parchment);background:var(--cream)}
+
+/* EMP SLIP CONTENT */
+.emp-slip{font-family:'DM Sans',sans-serif;color:#111;background:#fff;padding:40px 44px}
+.slip-company-header{text-align:center;border-bottom:3px solid #1a2e1a;padding-bottom:18px;margin-bottom:22px}
+.slip-company-name{font-family:'DM Serif Display',serif;font-size:22px;color:#1a2e1a;letter-spacing:.01em}
+.slip-company-sub{font-size:12px;color:#555;margin-top:4px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.slip-form-title{font-family:'DM Serif Display',serif;font-size:15px;text-align:center;margin-bottom:22px;color:#3d2b1f;background:var(--parchment);padding:10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase}
+.slip-ref{display:flex;justify-content:space-between;font-size:11.5px;color:#555;margin-bottom:20px}
+.slip-ref span{font-weight:700;color:#111}
+.slip-section{margin-bottom:20px}
+.slip-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;border-bottom:1px solid #e5e0d5;padding-bottom:6px;margin-bottom:12px}
+.slip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+.slip-field{display:flex;flex-direction:column;gap:3px}
+.slip-field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999}
+.slip-field-value{font-size:13.5px;font-weight:600;color:#1a2e1a;border-bottom:1px solid #ddd;padding-bottom:5px;min-height:22px}
+
+/* LEAVE HISTORY TABLE IN SLIP */
+.slip-leave-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.slip-leave-table th{background:var(--parchment);padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#666}
+.slip-leave-table td{padding:7px 10px;border-bottom:1px solid #f0ebe0;vertical-align:middle}
+.slip-leave-table tr:last-child td{border-bottom:none}
+.slip-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.slip-badge-approved{background:#eaf3e5;color:#4a6741}
+.slip-badge-pending{background:#fdf3e3;color:#c8832a}
+.slip-badge-rejected{background:#fce8e8;color:#8b2e2e}
+.slip-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.slip-summary-card{background:var(--parchment);border-radius:8px;padding:10px 14px;text-align:center}
+.slip-summary-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--moss)}
+.slip-summary-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-top:2px}
+
+/* SIGNATURE SECTION */
+.slip-signatures{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid #ccc;border-radius:6px;overflow:hidden;margin-top:16px}
+.sig-block{padding:14px 14px 12px;border-right:1px solid #ccc;text-align:center}
+.sig-block:last-child{border-right:none}
+.sig-block-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#555;margin-bottom:14px;background:var(--parchment);margin:-14px -14px 14px;padding:8px 14px}
+.sig-line{border-bottom:1.5px solid #333;margin:36px 10px 8px;min-height:36px}
+.sig-name-line{border-bottom:1px dashed #bbb;margin:0 10px 6px;height:18px}
+.sig-date-line{border-bottom:1px dashed #bbb;margin:0 10px;height:18px}
+.sig-sub-label{font-size:9.5px;color:#999;margin-bottom:3px;text-align:left;padding-left:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── PRINT STYLES ── */
+@media print{
+  body > *:not(#empSlipPrintArea){display:none!important}
+  #empSlipPrintArea{display:block!important;position:fixed;inset:0;z-index:9999;background:#fff}
+  .emp-slip{padding:16mm 16mm}
+  .slip-actions{display:none!important}
+  @page{margin:8mm;size:A4 portrait}
+}
+#empSlipPrintArea{display:none}
 
 /* RESPONSIVE */
 @media(max-width:900px){.emp-stats{grid-template-columns:1fr 1fr}.table-wrap{font-size:12px}}
@@ -226,11 +277,11 @@ tbody tr:hover{background:#fafaf6}
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Full Name *</label>
-        <input type="text" class="form-input" id="eName" placeholder="e.g. Amara Silva">
+        <input type="text" class="form-input" id="eName" placeholder="e.g. John Silva">
       </div>
       <div class="form-group">
         <label class="form-label">Employee ID *</label>
-        <input type="text" class="form-input" id="eId" placeholder="e.g. EMP006">
+        <input type="text" class="form-input" id="eId" placeholder="e.g. EMP001">
       </div>
     </div>
     <div class="form-group">
@@ -276,7 +327,6 @@ tbody tr:hover{background:#fafaf6}
   <div class="modal" style="width:460px">
     <div class="modal-title">Manage Departments</div>
     <div class="modal-sub">Add or remove departments. Departments in use cannot be deleted.</div>
-    <!-- Add new dept -->
     <div style="display:flex;gap:8px;margin-bottom:20px">
       <input type="text" class="form-input" id="newDeptName" placeholder="New department name…" style="flex:1">
       <button class="btn btn-primary" onclick="addDepartment()">+ Add</button>
@@ -288,40 +338,30 @@ tbody tr:hover{background:#fafaf6}
   </div>
 </div>
 
+<!-- EMPLOYEE PROFILE SLIP MODAL -->
+<div class="modal-overlay" id="empSlipModal">
+  <div class="modal slip-modal">
+    <div id="empSlipContent" class="emp-slip"></div>
+    <div class="slip-actions">
+      <button class="btn btn-cancel" onclick="closeEmpSlipModal()">✕ Close</button>
+      <button class="btn btn-primary" onclick="triggerEmpSlipPrint()">🖨 Print Employee Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN PRINT AREA -->
+<div id="empSlipPrintArea"></div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
 
 <script>
-/* ═══════════════════════════════════════════════════
-   BARK ORNAMENT — EMPLOYEE DIRECTORY  ·  employees.html
-   Shares localStorage with index.html (same origin).
-   ═══════════════════════════════════════════════════
+var GS_URL = 'https://script.google.com/macros/s/AKfycbyQb76cBinhz3MYDXAJgYD6ZIvLYuDbtdkT2YXxMni_jLreMclMwjwHgonbJ1Ayk0p6eg/exec';
 
-   ▶  GOOGLE SHEET CONNECTION — same GS_URL as index.html
-   Paste your Web App URL below. On load, sheet is pulled.
-   Every employee add/edit/delete pushes silently.
-   ═══════════════════════════════════════════════════ */
-var GS_URL = 'https://script.google.com/macros/s/AKfycbyQb76cBinhz3MYDXAJgYD6ZIvLYuDbtdkT2YXxMni_jLreMclMwjwHgonbJ1Ayk0p6eg/exec'; // ← SAME URL AS index.html
-
-/* ── DEFAULT DATA ── */
-var _defaultEmp = [
-  {id:'EMP001',name:'Amara Silva',      dept:'Design',    email:'amara@barkornament.com',   balance:21},
-  {id:'EMP002',name:'Rohan Perera',     dept:'Operations',email:'rohan@barkornament.com',   balance:21},
-  {id:'EMP003',name:'Nisha Fernando',   dept:'Sales',     email:'nisha@barkornament.com',   balance:21},
-  {id:'EMP004',name:'Kasun Mendis',     dept:'HR',        email:'kasun@barkornament.com',   balance:21},
-  {id:'EMP005',name:'Dilani Wijesinghe',dept:'Finance',   email:'dilani@barkornament.com',  balance:21},
-];
-var _defaultLeaves=[
-  {empId:'EMP001',type:'Sick',  start:'2025-01-10',end:'2025-01-11',days:2,reason:'Fever',          status:'Approved',applied:'2025-01-09',comment:''},
-  {empId:'EMP002',type:'Annual',start:'2025-02-03',end:'2025-02-07',days:5,reason:'Family vacation',status:'Approved',applied:'2025-01-28',comment:''},
-  {empId:'EMP003',type:'Casual',start:'2025-02-20',end:'2025-02-20',days:1,reason:'Personal work',  status:'Rejected',applied:'2025-02-19',comment:'Busy period'},
-  {empId:'EMP004',type:'Sick',  start:'2025-03-05',end:'2025-03-06',days:2,reason:'Medical checkup',status:'Approved',applied:'2025-03-04',comment:''},
-  {empId:'EMP005',type:'Annual',start:'2025-04-14',end:'2025-04-18',days:5,reason:'Holiday trip',   status:'Pending', applied:'2025-04-10',comment:''},
-  {empId:'EMP001',type:'Casual',start:'2025-04-22',end:'2025-04-22',days:1,reason:'',               status:'Pending', applied:'2025-04-21',comment:''},
-  {empId:'EMP002',type:'Sick',  start:'2025-05-01',end:'2025-05-02',days:2,reason:'Cold',           status:'Approved',applied:'2025-04-30',comment:''},
-  {empId:'EMP003',type:'Annual',start:'2025-06-10',end:'2025-06-14',days:5,reason:'',               status:'Pending', applied:'2025-06-08',comment:''},
-];
-var _defaultDepts=['Design','Operations','Sales','HR','Finance'];
+/* ── DEFAULT DATA (empty — start fresh) ── */
+var _defaultEmp = [];
+var _defaultLeaves = [];
+var _defaultDepts = [];
 
 /* ── STATE ── */
 var employees=[],leaves=[],departments=[];
@@ -409,7 +449,7 @@ function renderEmpTable(){
     return true;
   });
   document.getElementById('filteredCount').textContent=filtered.length+' employee'+(filtered.length!==1?'s':'');
-  document.getElementById('empCount').textContent=employees.length+' employee'+(employees.length!==1?'s, ':', ')+employees.length+' across '+departments.length+' department'+(departments.length!==1?'s':'');
+  document.getElementById('empCount').textContent=employees.length+' employee'+(employees.length!==1?'s':'')+(employees.length?', across '+departments.length+' department'+(departments.length!==1?'s':''):'');
   var tbody=document.getElementById('empTableBody');
   if(!filtered.length){
     tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:32px;color:#bbb">No employees found.</td></tr>';
@@ -433,6 +473,7 @@ function renderEmpTable(){
       '<td><div class="bal-cell"><span class="rem-num '+remCls+'">'+rem+'</span></div></td>'+
       '<td><div class="bal-cell"><div class="progress-bar"><div class="progress-fill '+cls+'" style="width:'+pct+'%"></div></div><span style="font-size:11.5px;color:#888">'+pct+'%</span></div></td>'+
       '<td><div class="action-btns">'+
+        '<button class="btn btn-sm btn-print" onclick="openEmpSlipModal('+idx+')" title="Print Employee Profile">🖨</button>'+
         '<button class="btn btn-sm btn-edit" onclick="openEmpModal('+idx+')">✎ Edit</button>'+
         '<button class="btn btn-sm btn-del"  onclick="openDeleteModal('+idx+')">✕</button>'+
       '</div></td>'+
@@ -552,20 +593,20 @@ function updateDeptList(){
   }).join('');
 }
 
-function addDepartment() {
-  var name = document.getElementById('newDeptName').value.trim();
-  if (!name) return;
-  if (departments.map(function(d){return d.toLowerCase();}).indexOf(name.toLowerCase()) !== -1) {
-    showToast('⚠️', 'Department already exists'); return;
+function addDepartment(){
+  var name=document.getElementById('newDeptName').value.trim();
+  if(!name)return;
+  if(departments.map(function(d){return d.toLowerCase();}).indexOf(name.toLowerCase())!==-1){
+    showToast('⚠️','Department already exists');return;
   }
   departments.push(name);
   persist();
   rebuildDeptDropdowns();
   renderAll();
   updateDeptList();
-  document.getElementById('newDeptName').value = '';
-  showToast('🏢', '"' + name + '" department added');
-  gsPush({ action: 'addDepartment', name: name });
+  document.getElementById('newDeptName').value='';
+  showToast('🏢','"'+name+'" department added');
+  gsPush({action:'addDepartment',name:name});
 }
 
 function removeDept(idx){
@@ -577,6 +618,139 @@ function removeDept(idx){
   updateDeptList();
   showToast('🗑️','"'+name+'" removed');
   gsPush({action:'deleteDepartment',name:name});
+}
+
+/* ── EMPLOYEE PROFILE SLIP ── */
+function openEmpSlipModal(idx){
+  var emp=employees[idx];
+  var empLeaves=leaves.filter(function(l){return l.empId===emp.id;});
+  var usedDays=empLeaves.filter(function(l){return l.status==='Approved';})
+                        .reduce(function(s,l){return s+l.days;},0);
+  var pendingDays=empLeaves.filter(function(l){return l.status==='Pending';})
+                           .reduce(function(s,l){return s+l.days;},0);
+  var remDays=emp.balance-usedDays;
+  var refNo='EPR-'+emp.id+'-'+new Date().getFullYear();
+
+  var leaveRows='';
+  if(empLeaves.length){
+    leaveRows=empLeaves.map(function(l){
+      var stCls=l.status==='Approved'?'slip-badge-approved':l.status==='Rejected'?'slip-badge-rejected':'slip-badge-pending';
+      return'<tr>'+
+        '<td>'+fmt(l.start)+'</td>'+
+        '<td>'+fmt(l.end)+'</td>'+
+        '<td>'+l.type+'</td>'+
+        '<td style="text-align:center">'+l.days+'</td>'+
+        '<td>'+(l.reason||'—')+'</td>'+
+        '<td><span class="slip-badge '+stCls+'">'+l.status+'</span></td>'+
+      '</tr>';
+    }).join('');
+  }else{
+    leaveRows='<tr><td colspan="6" style="text-align:center;color:#bbb;padding:16px">No leave records on file.</td></tr>';
+  }
+
+  var html=
+    '<div class="slip-company-header">'+
+      '<div class="slip-company-name">Bark Ornament Pvt Ltd</div>'+
+      '<div class="slip-company-sub">Employee Leave Profile Report</div>'+
+    '</div>'+
+    '<div class="slip-form-title">Employee Leave History &amp; Profile</div>'+
+    '<div class="slip-ref">'+
+      '<div>Reference No: <span>'+refNo+'</span></div>'+
+      '<div>Generated on: <span>'+new Date().toLocaleDateString('en-LK',{day:'2-digit',month:'long',year:'numeric'})+'</span></div>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Employee Information</div>'+
+      '<div class="slip-grid">'+
+        '<div class="slip-field"><div class="slip-field-label">Full Name</div><div class="slip-field-value">'+emp.name+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Employee ID</div><div class="slip-field-value">'+emp.id+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Department</div><div class="slip-field-value">'+emp.dept+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Email Address</div><div class="slip-field-value">'+(emp.email||'—')+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Annual Entitlement</div><div class="slip-field-value">'+emp.balance+' Days</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Reporting Year</div><div class="slip-field-value">'+new Date().getFullYear()+'</div></div>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Leave Balance Summary</div>'+
+      '<div class="slip-summary-row">'+
+        '<div class="slip-summary-card">'+
+          '<div class="slip-summary-num" style="color:var(--moss)">'+usedDays+'</div>'+
+          '<div class="slip-summary-label">Days Utilised</div>'+
+        '</div>'+
+        '<div class="slip-summary-card">'+
+          '<div class="slip-summary-num" style="color:var(--amber)">'+pendingDays+'</div>'+
+          '<div class="slip-summary-label">Days Pending</div>'+
+        '</div>'+
+        '<div class="slip-summary-card">'+
+          '<div class="slip-summary-num" style="color:var(--bark)">'+remDays+'</div>'+
+          '<div class="slip-summary-label">Days Remaining</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Leave History</div>'+
+      '<table class="slip-leave-table">'+
+        '<thead><tr>'+
+          '<th>From</th><th>To</th><th>Type</th><th style="text-align:center">Days</th><th>Reason</th><th>Status</th>'+
+        '</tr></thead>'+
+        '<tbody>'+leaveRows+'</tbody>'+
+      '</table>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Authorisation</div>'+
+      '<div class="slip-signatures">'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Prepared By</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name &amp; Designation</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Verified By</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name &amp; Designation</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Authorised By</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name &amp; Designation</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('empSlipContent').innerHTML=html;
+  document.getElementById('empSlipModal').classList.add('active');
+}
+function closeEmpSlipModal(){document.getElementById('empSlipModal').classList.remove('active');}
+
+function triggerEmpSlipPrint(){
+  var content=document.getElementById('empSlipContent').innerHTML;
+  var printArea=document.getElementById('empSlipPrintArea');
+  printArea.innerHTML='<div class="emp-slip">'+content+'</div>';
+  printArea.style.display='block';
+  document.querySelectorAll('body > *:not(#empSlipPrintArea)').forEach(function(el){el.style.display='none';});
+  window.print();
+  document.querySelectorAll('body > *:not(#empSlipPrintArea)').forEach(function(el){el.style.display='';});
+  printArea.style.display='none';
+  printArea.innerHTML='';
 }
 
 /* ── GOOGLE SHEET ── */
@@ -598,6 +772,10 @@ function gsPush(payload){
 }
 
 /* ── HELPERS ── */
+function fmt(d){
+  if(!d)return'—';
+  return new Date(d+'T00:00:00').toLocaleDateString('en-LK',{day:'2-digit',month:'short',year:'numeric'});
+}
 function showToast(icon,msg){
   document.getElementById('toastIcon').textContent=icon;
   document.getElementById('toastMsg').textContent=msg;
@@ -608,6 +786,7 @@ function showToast(icon,msg){
 document.addEventListener('click',function(e){
   if(e.target.id==='empModal'||e.target.id==='deleteModal'||e.target.id==='deptModal')
     e.target.classList.remove('active');
+  if(e.target.id==='empSlipModal')closeEmpSlipModal();
 });
 </script>
 </body>
