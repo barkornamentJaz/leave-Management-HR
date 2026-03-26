@@ -591,7 +591,7 @@ function submitLeave(){
   var ei=document.getElementById('fEditIdx').value;
   if(!empId||!start||!end){showToast('⚠️','Please fill all required fields');return;}
   if(new Date(end+'T00:00:00')<new Date(start+'T00:00:00')){showToast('⚠️','End date before start date');return;}
-  var days=dv?parseInt(dv):Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/86400000)+1;
+  var days = dv ? parseFloat(dv) : Math.round((new Date(end + 'T00:00:00') - new Date(start + 'T00:00:00')) / 86400000) + 1;
   var rec={empId:empId,type:type,start:start,end:end,days:days,reason:reason,
            status:status,applied:new Date().toISOString().split('T')[0],comment:comment};
   if(ei!==''){leaves[parseInt(ei)]=rec;}else{leaves.push(rec);}
