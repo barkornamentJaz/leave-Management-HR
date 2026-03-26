@@ -241,7 +241,7 @@ tbody tr:hover{background:#fafaf6}
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Email Address *</label>
+      <label class="form-label">Email Address</label>
       <input type="email" class="form-input" id="eEmail" placeholder="name@barkornament.com">
     </div>
     <div class="form-group">
@@ -409,7 +409,7 @@ function renderEmpTable(){
     return true;
   });
   document.getElementById('filteredCount').textContent=filtered.length+' employee'+(filtered.length!==1?'s':'');
-  document.getElementById('empCount').textContent=employees.length+' employee'+(employees.length!==1?'s':', ')+' across '+departments.length+' department'+(departments.length!==1?'s':'');
+  document.getElementById('empCount').textContent=employees.length+' employee'+(employees.length!==1?'s, ':', ')+employees.length+' across '+departments.length+' department'+(departments.length!==1?'s':'');
   var tbody=document.getElementById('empTableBody');
   if(!filtered.length){
     tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:32px;color:#bbb">No employees found.</td></tr>';
@@ -427,7 +427,7 @@ function renderEmpTable(){
       '<td><span class="id-code">'+emp.id+'</span></td>'+
       '<td><strong>'+emp.name+'</strong></td>'+
       '<td><span class="dept-tag">'+emp.dept+'</span></td>'+
-      '<td style="font-size:12.5px;color:#555">'+emp.email+'</td>'+
+      '<td style="font-size:12.5px;color:#555">'+(emp.email||'—')+'</td>'+
       '<td style="font-weight:600;text-align:center">'+emp.balance+'</td>'+
       '<td style="text-align:center">'+used+'</td>'+
       '<td><div class="bal-cell"><span class="rem-num '+remCls+'">'+rem+'</span></div></td>'+
@@ -462,7 +462,7 @@ function openEmpModal(editIdx){
     document.getElementById('eId').readOnly=true;
     document.getElementById('eId').style.opacity='.5';
     document.getElementById('eDept').value=emp.dept;
-    document.getElementById('eEmail').value=emp.email;
+    document.getElementById('eEmail').value=emp.email||'';
     document.getElementById('eBalance').value=emp.balance;
     document.getElementById('eEditIdx').value=editIdx;
   }else{
@@ -498,7 +498,7 @@ function saveEmployee(){
   var email=document.getElementById('eEmail').value.trim();
   var balance=parseInt(document.getElementById('eBalance').value)||21;
   var ei=document.getElementById('eEditIdx').value;
-  if(!name||!id||!email||!dept){showToast('⚠️','Fill all required fields');return;}
+  if(!name||!id||!dept){showToast('⚠️','Fill all required fields');return;}
   if(ei===''&&employees.find(function(e){return e.id===id;})){showToast('⚠️','Employee ID already exists');return;}
   var rec={id:id,name:name,dept:dept,email:email,balance:balance};
   if(ei!==''){employees[parseInt(ei)]=rec;}else{employees.push(rec);}
