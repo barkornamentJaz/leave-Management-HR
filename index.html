@@ -141,49 +141,34 @@ tbody tr:hover{background:#fafaf6}
 .toast{position:fixed;bottom:28px;right:28px;background:var(--forest);color:var(--cream);padding:14px 22px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:300;transform:translateY(80px);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .toast.show{transform:translateY(0);opacity:1}
 
-/* ── LEAVE SLIP PRINT MODAL ── */
+/* ── LEAVE SLIP MODAL (preview only) ── */
 .slip-modal{width:680px;max-width:96vw;padding:0}
-.slip-modal .slip-actions{padding:16px 24px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--parchment);background:var(--cream)}
+.slip-actions{padding:16px 24px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--parchment);background:var(--cream)}
+.leave-slip-preview{font-family:'DM Sans',sans-serif;color:#222;background:#fff;padding:32px 36px;max-height:72vh;overflow-y:auto}
 
-/* LEAVE SLIP CONTENT */
-.leave-slip{font-family:'DM Sans',sans-serif;color:#111;background:#fff;padding:40px 44px}
-.slip-company-header{text-align:center;border-bottom:3px solid #1a2e1a;padding-bottom:18px;margin-bottom:22px}
-.slip-company-name{font-family:'DM Serif Display',serif;font-size:22px;color:#1a2e1a;letter-spacing:.01em}
-.slip-company-sub{font-size:12px;color:#555;margin-top:4px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.slip-form-title{font-family:'DM Serif Display',serif;font-size:16px;text-align:center;margin-bottom:22px;color:#3d2b1f;background:var(--parchment);padding:10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase}
-.slip-ref{display:flex;justify-content:space-between;font-size:11.5px;color:#555;margin-bottom:20px}
-.slip-ref span{font-weight:700;color:#111}
-.slip-section{margin-bottom:20px}
-.slip-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;border-bottom:1px solid #e5e0d5;padding-bottom:6px;margin-bottom:12px}
-.slip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
-.slip-field{display:flex;flex-direction:column;gap:3px}
-.slip-field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999}
-.slip-field-value{font-size:13.5px;font-weight:600;color:#1a2e1a;border-bottom:1px solid #ddd;padding-bottom:5px;min-height:22px}
-.slip-reason-box{border:1px solid #ddd;border-radius:6px;padding:10px 12px;font-size:13px;color:#333;min-height:50px;line-height:1.5}
-.slip-status-box{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.slip-status-approved{background:#eaf3e5;color:#4a6741;border:1.5px solid #4a6741}
-.slip-status-pending{background:#fdf3e3;color:#c8832a;border:1.5px solid #c8832a}
-.slip-status-rejected{background:#fce8e8;color:#8b2e2e;border:1.5px solid #8b2e2e}
-
-/* SIGNATURE SECTION */
-.slip-signatures{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid #ccc;border-radius:6px;overflow:hidden;margin-top:24px}
-.sig-block{padding:14px 14px 12px;border-right:1px solid #ccc;text-align:center}
-.sig-block:last-child{border-right:none}
-.sig-block-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#555;margin-bottom:14px;background:var(--parchment);margin:-14px -14px 14px;padding:8px 14px}
-.sig-line{border-bottom:1.5px solid #333;margin:36px 10px 8px;min-height:36px}
-.sig-name-line{border-bottom:1px dashed #bbb;margin:0 10px 6px;height:18px}
-.sig-date-line{border-bottom:1px dashed #bbb;margin:0 10px;height:18px}
-.sig-sub-label{font-size:9.5px;color:#999;margin-bottom:3px;text-align:left;padding-left:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-
-/* ── PRINT STYLES ── */
-@media print{
-  body > *:not(#slipPrintArea){display:none!important}
-  #slipPrintArea{display:block!important;position:fixed;inset:0;z-index:9999;background:#fff}
-  .leave-slip{padding:20mm 18mm}
-  .slip-actions{display:none!important}
-  @page{margin:8mm;size:A4 portrait}
-}
-#slipPrintArea{display:none}
+/* preview info rows */
+.pv-header{text-align:center;border-bottom:3px double #1a2e1a;padding-bottom:14px;margin-bottom:16px}
+.pv-company{font-family:'DM Serif Display',serif;font-size:20px;color:#1a2e1a}
+.pv-sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#666;margin-top:4px}
+.pv-title{text-align:center;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:#1a2e1a;padding:8px;margin-bottom:14px}
+.pv-meta{display:flex;justify-content:space-between;font-size:11.5px;color:#555;margin-bottom:14px;border-bottom:1px solid #eee;padding-bottom:10px}
+.pv-meta b{color:#111}
+.pv-section-label{font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:#3d2b1f;padding:4px 10px;margin:12px 0 8px;display:block}
+.pv-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:4px}
+.pv-table td{padding:6px 10px;border:1px solid #ddd;vertical-align:top}
+.pv-table td:first-child{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#888;background:#fafaf6;width:38%}
+.pv-status{display:inline-block;padding:3px 12px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.pv-approved{background:#eaf3e5;color:#2d6a2d;border:1px solid #4a6741}
+.pv-pending{background:#fdf3e3;color:#8a5a00;border:1px solid #c8832a}
+.pv-rejected{background:#fce8e8;color:#8b2e2e;border:1px solid #8b2e2e}
+.pv-reason{font-size:12.5px;color:#333;padding:8px 10px;border:1px solid #ddd;background:#fafaf6;min-height:36px;line-height:1.5}
+.pv-sig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid #bbb;margin-top:14px}
+.pv-sig-cell{padding:10px;border-right:1px solid #bbb}
+.pv-sig-cell:last-child{border-right:none}
+.pv-sig-head{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:#1a2e1a;margin:-10px -10px 10px;padding:6px 10px}
+.pv-sig-space{height:40px;border-bottom:1.5px solid #333;margin:4px 6px 6px}
+.pv-sig-line{height:16px;border-bottom:1px dashed #aaa;margin:0 6px 4px}
+.pv-sig-lbl{font-size:8.5px;color:#aaa;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px;padding-left:6px}
 
 /* DASHBOARD PRINT */
 @media print{
@@ -368,19 +353,16 @@ tbody tr:hover{background:#fafaf6}
   </div>
 </div>
 
-<!-- LEAVE SLIP MODAL -->
+<!-- LEAVE SLIP MODAL (preview) -->
 <div class="modal-overlay" id="slipModal">
   <div class="modal slip-modal">
-    <div id="slipContent" class="leave-slip"></div>
+    <div id="slipContent" class="leave-slip-preview"></div>
     <div class="slip-actions">
       <button class="btn btn-cancel" onclick="closeSlipModal()">✕ Close</button>
       <button class="btn btn-primary" onclick="triggerSlipPrint()">🖨 Print Leave Slip</button>
     </div>
   </div>
 </div>
-
-<!-- HIDDEN PRINT AREA (isolated for print CSS) -->
-<div id="slipPrintArea"></div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
@@ -644,113 +626,165 @@ function submitLeave(){
   gsPush({action:'updateLeave',data:rec});
 }
 
-/* ── LEAVE SLIP MODAL ── */
+/* ── LEAVE SLIP ── */
+var _currentSlipIdx = -1;
+
+function buildSlipHTML(l, emp, forPrint) {
+  var refNo = 'LAF-' + l.empId + '-' + l.start.replace(/-/g,'');
+  var dateIssued = new Date().toLocaleDateString('en-LK',{day:'2-digit',month:'long',year:'numeric'});
+  var stCls = l.status==='Approved' ? 'pv-approved' : l.status==='Rejected' ? 'pv-rejected' : 'pv-pending';
+
+  var reasonRow = l.reason
+    ? '<tr><td>Reason for Leave</td><td colspan="3"><div class="pv-reason">'+l.reason+'</div></td></tr>' : '';
+  var commentRow = l.comment
+    ? '<tr><td>Management Remarks</td><td colspan="3"><div class="pv-reason" style="border-color:#c8832a">'+l.comment+'</div></td></tr>' : '';
+
+  return (
+    '<div class="pv-header">' +
+      '<div class="pv-company">Bark Ornament Pvt Ltd</div>' +
+      '<div class="pv-sub">Leave Application Form</div>' +
+    '</div>' +
+    '<div class="pv-title">Official Leave Application</div>' +
+    '<div class="pv-meta">' +
+      '<span>Ref No: <b>' + refNo + '</b></span>' +
+      '<span>Date Issued: <b>' + dateIssued + '</b></span>' +
+    '</div>' +
+
+    '<span class="pv-section-label">Employee Information</span>' +
+    '<table class="pv-table">' +
+      '<tr><td>Full Name</td><td><b>' + emp.name + '</b></td>' +
+          '<td>Employee ID</td><td><b>' + emp.id + '</b></td></tr>' +
+      '<tr><td>Department</td><td>' + emp.dept + '</td>' +
+          '<td>Email Address</td><td>' + (emp.email||'—') + '</td></tr>' +
+    '</table>' +
+
+    '<span class="pv-section-label">Leave Details</span>' +
+    '<table class="pv-table">' +
+      '<tr><td>Leave Category</td><td><b>' + l.type + ' Leave</b></td>' +
+          '<td>Total Duration</td><td><b>' + l.days + ' Day' + (l.days!==1?'s':'') + '</b></td></tr>' +
+      '<tr><td>Commencement Date</td><td>' + fmt(l.start) + '</td>' +
+          '<td>Resumption Date</td><td>' + fmt(l.end) + '</td></tr>' +
+      '<tr><td>Date of Application</td><td>' + fmt(l.applied) + '</td>' +
+          '<td>Approval Status</td><td><span class="pv-status ' + stCls + '">' + l.status + '</span></td></tr>' +
+      reasonRow +
+      commentRow +
+    '</table>' +
+
+    '<span class="pv-section-label">Authorisation &amp; Acknowledgement</span>' +
+    '<div class="pv-sig-grid">' +
+
+      '<div class="pv-sig-cell">' +
+        '<div class="pv-sig-head">Employee Declaration</div>' +
+        '<div class="pv-sig-space"></div>' +
+        '<div class="pv-sig-lbl">Signature</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Full Name</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Date</div>' +
+        '<div class="pv-sig-line"></div>' +
+      '</div>' +
+
+      '<div class="pv-sig-cell">' +
+        '<div class="pv-sig-head">Department Head\'s Endorsement</div>' +
+        '<div class="pv-sig-space"></div>' +
+        '<div class="pv-sig-lbl">Signature</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Name &amp; Designation</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Date</div>' +
+        '<div class="pv-sig-line"></div>' +
+      '</div>' +
+
+      '<div class="pv-sig-cell">' +
+        '<div class="pv-sig-head">Management Authorisation</div>' +
+        '<div class="pv-sig-space"></div>' +
+        '<div class="pv-sig-lbl">Signature</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Name &amp; Designation</div>' +
+        '<div class="pv-sig-line"></div>' +
+        '<div class="pv-sig-lbl">Date</div>' +
+        '<div class="pv-sig-line"></div>' +
+      '</div>' +
+
+    '</div>'
+  );
+}
+
 function openSlipModal(idx){
   var l=leaves[idx];
   var emp=getEmp(l.empId);
   if(!emp){showToast('⚠️','Employee not found');return;}
-
-  var refNo='LAF-'+l.empId+'-'+l.start.replace(/-/g,'');
-  var statusClass=l.status==='Approved'?'slip-status-approved':l.status==='Rejected'?'slip-status-rejected':'slip-status-pending';
-  var statusDot=l.status==='Approved'?'●':l.status==='Rejected'?'●':'○';
-
-  var html=
-    '<div class="slip-company-header">'+
-      '<div class="slip-company-name">Bark Ornament Pvt Ltd</div>'+
-      '<div class="slip-company-sub">Leave Application Form</div>'+
-    '</div>'+
-    '<div class="slip-form-title">Official Leave Application</div>'+
-    '<div class="slip-ref">'+
-      '<div>Reference No: <span>'+refNo+'</span></div>'+
-      '<div>Date Issued: <span>'+new Date().toLocaleDateString('en-LK',{day:'2-digit',month:'long',year:'numeric'})+'</span></div>'+
-    '</div>'+
-
-    '<div class="slip-section">'+
-      '<div class="slip-section-title">Employee Information</div>'+
-      '<div class="slip-grid">'+
-        '<div class="slip-field"><div class="slip-field-label">Full Name</div><div class="slip-field-value">'+emp.name+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Employee ID</div><div class="slip-field-value">'+emp.id+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Department</div><div class="slip-field-value">'+emp.dept+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Email</div><div class="slip-field-value">'+(emp.email||'—')+'</div></div>'+
-      '</div>'+
-    '</div>'+
-
-    '<div class="slip-section">'+
-      '<div class="slip-section-title">Leave Details</div>'+
-      '<div class="slip-grid">'+
-        '<div class="slip-field"><div class="slip-field-label">Leave Category</div><div class="slip-field-value">'+l.type+' Leave</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Total Duration</div><div class="slip-field-value">'+l.days+' Day'+(l.days!==1?'s':'')+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Commencement Date</div><div class="slip-field-value">'+fmt(l.start)+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Resumption Date</div><div class="slip-field-value">'+fmt(l.end)+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Date of Application</div><div class="slip-field-value">'+fmt(l.applied)+'</div></div>'+
-        '<div class="slip-field"><div class="slip-field-label">Current Status</div><div class="slip-field-value"><span class="slip-status-box '+statusClass+'">'+statusDot+' '+l.status+'</span></div></div>'+
-      '</div>'+
-    '</div>'+
-
-    (l.reason?
-      '<div class="slip-section">'+
-        '<div class="slip-section-title">Reason for Leave</div>'+
-        '<div class="slip-reason-box">'+l.reason+'</div>'+
-      '</div>':'')+
-
-    (l.comment?
-      '<div class="slip-section">'+
-        '<div class="slip-section-title">Management Remarks</div>'+
-        '<div class="slip-reason-box" style="border-color:#c8832a;background:#fffbf5">'+l.comment+'</div>'+
-      '</div>':'')+
-
-    '<div class="slip-section">'+
-      '<div class="slip-section-title">Authorisation &amp; Acknowledgement</div>'+
-      '<div class="slip-signatures">'+
-
-        '<div class="sig-block">'+
-          '<div class="sig-block-title">Employee Declaration</div>'+
-          '<div class="sig-line"></div>'+
-          '<div class="sig-sub-label">Signature</div>'+
-          '<div class="sig-name-line"></div>'+
-          '<div class="sig-sub-label">Name</div>'+
-          '<div class="sig-date-line"></div>'+
-          '<div class="sig-sub-label">Date</div>'+
-        '</div>'+
-
-        '<div class="sig-block">'+
-          '<div class="sig-block-title">Department Head&apos;s Endorsement</div>'+
-          '<div class="sig-line"></div>'+
-          '<div class="sig-sub-label">Signature</div>'+
-          '<div class="sig-name-line"></div>'+
-          '<div class="sig-sub-label">Name &amp; Designation</div>'+
-          '<div class="sig-date-line"></div>'+
-          '<div class="sig-sub-label">Date</div>'+
-        '</div>'+
-
-        '<div class="sig-block">'+
-          '<div class="sig-block-title">Management Authorisation</div>'+
-          '<div class="sig-line"></div>'+
-          '<div class="sig-sub-label">Signature</div>'+
-          '<div class="sig-name-line"></div>'+
-          '<div class="sig-sub-label">Name &amp; Designation</div>'+
-          '<div class="sig-date-line"></div>'+
-          '<div class="sig-sub-label">Date</div>'+
-        '</div>'+
-
-      '</div>'+
-    '</div>';
-
-  document.getElementById('slipContent').innerHTML=html;
+  _currentSlipIdx = idx;
+  document.getElementById('slipContent').innerHTML = buildSlipHTML(l, emp, false);
   document.getElementById('slipModal').classList.add('active');
 }
 function closeSlipModal(){document.getElementById('slipModal').classList.remove('active');}
 
 function triggerSlipPrint(){
-  var content=document.getElementById('slipContent').innerHTML;
-  var printArea=document.getElementById('slipPrintArea');
-  printArea.innerHTML='<div class="leave-slip">'+content+'</div>';
-  printArea.style.display='block';
-  document.querySelectorAll('body > *:not(#slipPrintArea)').forEach(function(el){el.style.display='none';});
-  window.print();
-  document.querySelectorAll('body > *:not(#slipPrintArea)').forEach(function(el){el.style.display='';});
-  printArea.style.display='none';
-  printArea.innerHTML='';
+  if(_currentSlipIdx<0)return;
+  var l=leaves[_currentSlipIdx];
+  var emp=getEmp(l.empId);
+  if(!emp)return;
+
+  var css = `
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',Arial,sans-serif;color:#111;background:#fff;padding:14mm 16mm;font-size:12pt}
+    @page{size:A4 portrait;margin:10mm}
+
+    /* HEADER */
+    .pv-header{text-align:center;border-top:4px solid #1a2e1a;border-bottom:2px solid #1a2e1a;padding:10pt 0 8pt;margin-bottom:10pt}
+    .pv-company{font-family:'DM Serif Display',Georgia,serif;font-size:20pt;color:#1a2e1a;letter-spacing:.5pt}
+    .pv-sub{font-size:8pt;letter-spacing:1.5pt;text-transform:uppercase;color:#555;margin-top:3pt}
+    .pv-title{text-align:center;font-size:9.5pt;font-weight:700;letter-spacing:2pt;text-transform:uppercase;
+              color:#fff;background:#1a2e1a;padding:6pt;margin:8pt 0}
+    .pv-meta{display:flex;justify-content:space-between;font-size:8.5pt;color:#444;
+             margin-bottom:8pt;border-bottom:1pt solid #ccc;padding-bottom:6pt}
+    .pv-meta b{color:#000;font-weight:700}
+
+    /* SECTIONS */
+    .pv-section-label{display:block;font-size:7.5pt;font-weight:800;letter-spacing:1.8pt;
+                      text-transform:uppercase;color:#fff;background:#3d2b1f;
+                      padding:3pt 8pt;margin:8pt 0 5pt}
+
+    /* TABLE */
+    .pv-table{width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:2pt}
+    .pv-table td{padding:5pt 8pt;border:0.75pt solid #ccc;vertical-align:top;line-height:1.4}
+    .pv-table td:first-child,.pv-table td:nth-child(3){font-size:7.5pt;font-weight:700;
+      text-transform:uppercase;letter-spacing:.7pt;color:#666;background:#f7f5f0;width:18%}
+    .pv-reason{font-size:10pt;color:#333;padding:5pt 8pt;border:0.75pt solid #ccc;
+               background:#f7f5f0;min-height:24pt;line-height:1.5}
+    .pv-status{display:inline-block;padding:2pt 10pt;font-size:8pt;font-weight:700;
+               letter-spacing:.8pt;text-transform:uppercase;border:0.75pt solid}
+    .pv-approved{background:#eaf3e5;color:#1f5c1f;border-color:#4a6741}
+    .pv-pending{background:#fdf3e3;color:#7a4800;border-color:#c8832a}
+    .pv-rejected{background:#fce8e8;color:#6b1e1e;border-color:#8b2e2e}
+
+    /* SIGNATURE */
+    .pv-sig-grid{display:table;width:100%;border-collapse:collapse;border:0.75pt solid #aaa;margin-top:6pt}
+    .pv-sig-cell{display:table-cell;width:33.33%;padding:8pt 10pt;
+                 border-right:0.75pt solid #aaa;vertical-align:top}
+    .pv-sig-cell:last-child{border-right:none}
+    .pv-sig-head{font-size:7pt;font-weight:800;letter-spacing:1.2pt;text-transform:uppercase;
+                 color:#fff;background:#1a2e1a;margin:-8pt -10pt 8pt;padding:5pt 10pt;display:block}
+    .pv-sig-space{height:52pt;border-bottom:1.5pt solid #111;margin:4pt 4pt 5pt}
+    .pv-sig-lbl{font-size:6.5pt;color:#999;font-weight:700;letter-spacing:.7pt;
+                text-transform:uppercase;margin-bottom:1.5pt;padding-left:4pt;display:block}
+    .pv-sig-line{height:15pt;border-bottom:0.75pt dashed #aaa;margin:0 4pt 4pt;display:block}
+
+    /* FOOTER */
+    .pv-footer{margin-top:10pt;padding-top:5pt;border-top:0.5pt solid #ccc;
+               font-size:7pt;color:#999;display:flex;justify-content:space-between}
+  `;
+
+  var body = buildSlipHTML(l, emp, true);
+  // add footer
+  body += '<div class="pv-footer"><span>Bark Ornament Pvt Ltd — Confidential HR Document</span><span>Page 1 of 1</span></div>';
+
+  var win = window.open('','_blank','width=794,height=1123');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Leave Slip — '+emp.name+'</title><style>'+css+'</style></head><body>'+body+'</body></html>');
+  win.document.close();
+  win.onload = function(){ win.focus(); win.print(); };
 }
 
 /* ── EXPORT CSV ── */
