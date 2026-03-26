@@ -552,17 +552,21 @@ function updateDeptList(){
   }).join('');
 }
 
-function addDepartment(){
-  var name=document.getElementById('newDeptName').value.trim();
-  if(!name){showToast('⚠️','Enter a department name');return;}
-  if(departments.includes(name)){showToast('⚠️','"'+name+'" already exists');return;}
+// ✅ FIXED
+function addDepartment() {
+  var name = document.getElementById('newDeptInput').value.trim(); // adjust ID to match yours
+  if (!name) return;
+  if (departments.map(function(d){return d.toLowerCase();}).includes(name.toLowerCase())) {
+    showToast('⚠️', 'Department already exists'); return;
+  }
   departments.push(name);
   persist();
-  document.getElementById('newDeptName').value='';
-  rebuildDeptDropdowns();
+  rebuildDeptFilter();   // or however you refresh the dept list
   renderAll();
-  updateDeptList();
-  showToast('✅','"'+name+'" added');
+  showToast('🏢', 'Department added');
+
+  // ✅ This is the line that pushes to Google Sheet
+  gsPush({ action: 'addDepartment', name: name });
 }
 
 function removeDept(idx){
