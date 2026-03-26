@@ -299,15 +299,16 @@ tbody tr:hover{background:#fafaf6}
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Days</label>
-      <select id="leaveType" onchange="setLeaveDays()">
-  <option value="">Select Leave Type</option>
-  <option value="1">Full Day</option>
-  <option value="0.5">Half Day</option>
-  <option value="0.25">Short Leave</option>
-</select>
-
-<input type="number" id="fDays" readonly placeholder="Auto-filled">
+      <!-- AFTER -->
+<div style="display:flex;gap:10px">
+  <select class="form-select" id="leaveType" onchange="setLeaveDays()" style="flex:1">
+    <option value="">Select Leave Type</option>
+    <option value="1">Full Day</option>
+    <option value="0.5">Half Day</option>
+    <option value="0.25">Short Leave</option>
+  </select>
+  <input type="number" class="form-input" id="fDays" readonly placeholder="Auto-filled" style="flex:1">
+</div>
       <div class="days-preview" id="daysPreview"></div>
     </div>
     <div class="form-group">
