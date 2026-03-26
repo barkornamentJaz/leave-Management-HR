@@ -7,10 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
   <style>
-/* =====================================================
-   BARK ORNAMENT PVT LTD — Leave Management Dashboard
-   index.html  ·  All CSS + JS inline
-   ===================================================== */
 :root{
   --forest:#1a2e1a;--bark:#3d2b1f;--moss:#4a6741;--leaf:#7ab648;
   --cream:#f5f0e8;--parchment:#ede5d3;--amber:#c8832a;--gold:#e0a93c;
@@ -46,6 +42,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--forest
 .btn-reject:hover{background:var(--rejected);color:#fff}
 .btn-edit{background:rgba(224,169,60,.12);color:var(--amber);border:1.5px solid var(--amber)}
 .btn-edit:hover{background:var(--amber);color:#fff}
+.btn-print{background:rgba(26,46,26,.08);color:var(--forest);border:1.5px solid rgba(26,46,26,.2)}
+.btn-print:hover{background:var(--forest);color:#fff}
 
 /* LAYOUT */
 .container{max-width:1380px;margin:0 auto;padding:28px 32px}
@@ -94,7 +92,7 @@ tbody tr:hover{background:#fafaf6}
 .badge-rejected{background:var(--rejected-bg);color:var(--rejected)}
 .leave-type{background:rgba(74,103,65,.1);color:var(--moss);padding:3px 9px;border-radius:6px;font-size:11.5px;font-weight:600}
 .dept-tag{background:rgba(26,46,26,.07);color:var(--bark);padding:2px 8px;border-radius:5px;font-size:11.5px;font-weight:600}
-.action-btns{display:flex;gap:5px}
+.action-btns{display:flex;gap:5px;flex-wrap:wrap}
 
 /* SIDEBAR */
 .sidebar{display:flex;flex-direction:column;gap:20px}
@@ -132,7 +130,7 @@ tbody tr:hover{background:#fafaf6}
 .modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--forest);margin-bottom:20px}
 .form-group{margin-bottom:14px}
 .form-label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#777;margin-bottom:6px}
-.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15s}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1.5px solid var(--parchment);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--forest);background:var(--cream);outline:none;transition:border-color .15px}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--leaf);background:#fff}
 .form-textarea{resize:vertical;min-height:70px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -143,7 +141,51 @@ tbody tr:hover{background:#fafaf6}
 .toast{position:fixed;bottom:28px;right:28px;background:var(--forest);color:var(--cream);padding:14px 22px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:300;transform:translateY(80px);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .toast.show{transform:translateY(0);opacity:1}
 
-/* PRINT */
+/* ── LEAVE SLIP PRINT MODAL ── */
+.slip-modal{width:680px;max-width:96vw;padding:0}
+.slip-modal .slip-actions{padding:16px 24px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--parchment);background:var(--cream)}
+
+/* LEAVE SLIP CONTENT */
+.leave-slip{font-family:'DM Sans',sans-serif;color:#111;background:#fff;padding:40px 44px}
+.slip-company-header{text-align:center;border-bottom:3px solid #1a2e1a;padding-bottom:18px;margin-bottom:22px}
+.slip-company-name{font-family:'DM Serif Display',serif;font-size:22px;color:#1a2e1a;letter-spacing:.01em}
+.slip-company-sub{font-size:12px;color:#555;margin-top:4px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.slip-form-title{font-family:'DM Serif Display',serif;font-size:16px;text-align:center;margin-bottom:22px;color:#3d2b1f;background:var(--parchment);padding:10px;border-radius:6px;letter-spacing:.04em;text-transform:uppercase}
+.slip-ref{display:flex;justify-content:space-between;font-size:11.5px;color:#555;margin-bottom:20px}
+.slip-ref span{font-weight:700;color:#111}
+.slip-section{margin-bottom:20px}
+.slip-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;border-bottom:1px solid #e5e0d5;padding-bottom:6px;margin-bottom:12px}
+.slip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+.slip-field{display:flex;flex-direction:column;gap:3px}
+.slip-field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999}
+.slip-field-value{font-size:13.5px;font-weight:600;color:#1a2e1a;border-bottom:1px solid #ddd;padding-bottom:5px;min-height:22px}
+.slip-reason-box{border:1px solid #ddd;border-radius:6px;padding:10px 12px;font-size:13px;color:#333;min-height:50px;line-height:1.5}
+.slip-status-box{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.slip-status-approved{background:#eaf3e5;color:#4a6741;border:1.5px solid #4a6741}
+.slip-status-pending{background:#fdf3e3;color:#c8832a;border:1.5px solid #c8832a}
+.slip-status-rejected{background:#fce8e8;color:#8b2e2e;border:1.5px solid #8b2e2e}
+
+/* SIGNATURE SECTION */
+.slip-signatures{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid #ccc;border-radius:6px;overflow:hidden;margin-top:24px}
+.sig-block{padding:14px 14px 12px;border-right:1px solid #ccc;text-align:center}
+.sig-block:last-child{border-right:none}
+.sig-block-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#555;margin-bottom:14px;background:var(--parchment);margin:-14px -14px 14px;padding:8px 14px}
+.sig-line{border-bottom:1.5px solid #333;margin:36px 10px 8px;min-height:36px}
+.sig-name-line{border-bottom:1px dashed #bbb;margin:0 10px 6px;height:18px}
+.sig-date-line{border-bottom:1px dashed #bbb;margin:0 10px;height:18px}
+.sig-sub-label{font-size:9.5px;color:#999;margin-bottom:3px;text-align:left;padding-left:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── PRINT STYLES ── */
+@media print{
+  body > *:not(#slipPrintArea){display:none!important}
+  #slipPrintArea{display:block!important;position:fixed;inset:0;z-index:9999;background:#fff}
+  .leave-slip{padding:20mm 18mm}
+  .slip-actions{display:none!important}
+  @page{margin:8mm;size:A4 portrait}
+}
+#slipPrintArea{display:none}
+
+/* DASHBOARD PRINT */
 @media print{
   .header,.filters,.action-btns,.btn,.sidebar,.modal-overlay,.toast{display:none!important}
   body{background:#fff}.container{padding:0}.main-grid{grid-template-columns:1fr}
@@ -299,16 +341,15 @@ tbody tr:hover{background:#fafaf6}
       </div>
     </div>
     <div class="form-group">
-      <!-- AFTER -->
-<div style="display:flex;gap:10px">
-  <select class="form-select" id="leaveType" onchange="setLeaveDays()" style="flex:1">
-    <option value="">Select Leave Type</option>
-    <option value="1">Full Day</option>
-    <option value="0.5">Half Day</option>
-    <option value="0.25">Short Leave</option>
-  </select>
-  <input type="number" class="form-input" id="fDays" readonly placeholder="Auto-filled" style="flex:1">
-</div>
+      <div style="display:flex;gap:10px">
+        <select class="form-select" id="leaveType" onchange="setLeaveDays()" style="flex:1">
+          <option value="">Duration</option>
+          <option value="1">Full Day</option>
+          <option value="0.5">Half Day</option>
+          <option value="0.25">Short Leave</option>
+        </select>
+        <input type="number" class="form-input" id="fDays" readonly placeholder="Auto-filled" style="flex:1">
+      </div>
       <div class="days-preview" id="daysPreview"></div>
     </div>
     <div class="form-group">
@@ -327,43 +368,30 @@ tbody tr:hover{background:#fafaf6}
   </div>
 </div>
 
+<!-- LEAVE SLIP MODAL -->
+<div class="modal-overlay" id="slipModal">
+  <div class="modal slip-modal">
+    <div id="slipContent" class="leave-slip"></div>
+    <div class="slip-actions">
+      <button class="btn btn-cancel" onclick="closeSlipModal()">✕ Close</button>
+      <button class="btn btn-primary" onclick="triggerSlipPrint()">🖨 Print Leave Slip</button>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN PRINT AREA (isolated for print CSS) -->
+<div id="slipPrintArea"></div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
 
 <script>
-/* ═══════════════════════════════════════════════════
-   BARK ORNAMENT — LEAVE MANAGEMENT  ·  index.html
-   ═══════════════════════════════════════════════════
+var GS_URL = 'https://script.google.com/macros/s/AKfycbyQb76cBinhz3MYDXAJgYD6ZIvLYuDbtdkT2YXxMni_jLreMclMwjwHgonbJ1Ayk0p6eg/exec';
 
-   ▶  GOOGLE SHEET CONNECTION
-   ──────────────────────────
-   1. Deploy your Google Apps Script (see appscript.js)
-   2. Paste the Web App URL in GS_URL below.
-   3. That's it — every Save/Approve/Reject will push
-      data silently. On page load the sheet is pulled.
-
-   ═══════════════════════════════════════════════════ */
-var GS_URL = 'https://script.google.com/macros/s/AKfycbyQb76cBinhz3MYDXAJgYD6ZIvLYuDbtdkT2YXxMni_jLreMclMwjwHgonbJ1Ayk0p6eg/exec'; // ← PASTE YOUR WEB APP URL HERE
-
-/* ── DEFAULT SEED DATA ── */
-var _defaultEmp = [
-  {id:'EMP001',name:'Amara Silva',      dept:'Design',    email:'amara@barkornament.com',   balance:21},
-  {id:'EMP002',name:'Rohan Perera',     dept:'Operations',email:'rohan@barkornament.com',   balance:21},
-  {id:'EMP003',name:'Nisha Fernando',   dept:'Sales',     email:'nisha@barkornament.com',   balance:21},
-  {id:'EMP004',name:'Kasun Mendis',     dept:'HR',        email:'kasun@barkornament.com',   balance:21},
-  {id:'EMP005',name:'Dilani Wijesinghe',dept:'Finance',   email:'dilani@barkornament.com',  balance:21},
-];
-var _defaultLeaves = [
-  {empId:'EMP001',type:'Sick',  start:'2025-01-10',end:'2025-01-11',days:2,reason:'Fever',          status:'Approved',applied:'2025-01-09',comment:''},
-  {empId:'EMP002',type:'Annual',start:'2025-02-03',end:'2025-02-07',days:5,reason:'Family vacation',status:'Approved',applied:'2025-01-28',comment:''},
-  {empId:'EMP003',type:'Casual',start:'2025-02-20',end:'2025-02-20',days:1,reason:'Personal work',  status:'Rejected',applied:'2025-02-19',comment:'Busy period'},
-  {empId:'EMP004',type:'Sick',  start:'2025-03-05',end:'2025-03-06',days:2,reason:'Medical checkup',status:'Approved',applied:'2025-03-04',comment:''},
-  {empId:'EMP005',type:'Annual',start:'2025-04-14',end:'2025-04-18',days:5,reason:'Holiday trip',   status:'Pending', applied:'2025-04-10',comment:''},
-  {empId:'EMP001',type:'Casual',start:'2025-04-22',end:'2025-04-22',days:1,reason:'',               status:'Pending', applied:'2025-04-21',comment:''},
-  {empId:'EMP002',type:'Sick',  start:'2025-05-01',end:'2025-05-02',days:2,reason:'Cold',           status:'Approved',applied:'2025-04-30',comment:''},
-  {empId:'EMP003',type:'Annual',start:'2025-06-10',end:'2025-06-14',days:5,reason:'',               status:'Pending', applied:'2025-06-08',comment:''},
-];
-var _defaultDepts = ['Design','Operations','Sales','HR','Finance'];
+/* ── DEFAULT SEED DATA (empty — add employees via Employees page) ── */
+var _defaultEmp = [];
+var _defaultLeaves = [];
+var _defaultDepts = [];
 
 /* ── STATE ── */
 var employees=[], leaves=[], departments=[], balYear=new Date().getFullYear();
@@ -463,6 +491,7 @@ function renderTable(){
                '<button class="btn btn-sm btn-reject"  onclick="updateStatus('+idx+',\'Rejected\')">✕ Reject</button>';
     }
     actions+='<button class="btn btn-sm btn-edit" onclick="openLeaveModal('+idx+')">✎</button>';
+    actions+='<button class="btn btn-sm btn-print" onclick="openSlipModal('+idx+')" title="Print Leave Slip">🖨</button>';
     return'<tr>'+
       '<td><strong>'+(emp?emp.name:l.empId)+'</strong><br><span style="font-size:11px;color:#aaa">'+l.empId+'</span></td>'+
       '<td><span class="dept-tag">'+(emp?emp.dept:'—')+'</span></td>'+
@@ -586,6 +615,10 @@ function autoCalcDays(){
     document.getElementById('daysPreview').textContent=d+' day'+(d!==1?'s':'');
   }
 }
+function setLeaveDays(){
+  var type=document.getElementById('leaveType').value;
+  document.getElementById('fDays').value=type;
+}
 
 function submitLeave(){
   var empId=document.getElementById('fEmployee').value;
@@ -599,7 +632,7 @@ function submitLeave(){
   var ei=document.getElementById('fEditIdx').value;
   if(!empId||!start||!end){showToast('⚠️','Please fill all required fields');return;}
   if(new Date(end+'T00:00:00')<new Date(start+'T00:00:00')){showToast('⚠️','End date before start date');return;}
-  var days = dv ? parseFloat(dv) : Math.round((new Date(end + 'T00:00:00') - new Date(start + 'T00:00:00')) / 86400000) + 1;
+  var days=dv?parseFloat(dv):Math.round((new Date(end+'T00:00:00')-new Date(start+'T00:00:00'))/86400000)+1;
   var rec={empId:empId,type:type,start:start,end:end,days:days,reason:reason,
            status:status,applied:new Date().toISOString().split('T')[0],comment:comment};
   if(ei!==''){leaves[parseInt(ei)]=rec;}else{leaves.push(rec);}
@@ -609,6 +642,115 @@ function submitLeave(){
   renderAll();
   showToast('📋',ei!==''?'Leave updated':'Leave submitted');
   gsPush({action:'updateLeave',data:rec});
+}
+
+/* ── LEAVE SLIP MODAL ── */
+function openSlipModal(idx){
+  var l=leaves[idx];
+  var emp=getEmp(l.empId);
+  if(!emp){showToast('⚠️','Employee not found');return;}
+
+  var refNo='LAF-'+l.empId+'-'+l.start.replace(/-/g,'');
+  var statusClass=l.status==='Approved'?'slip-status-approved':l.status==='Rejected'?'slip-status-rejected':'slip-status-pending';
+  var statusDot=l.status==='Approved'?'●':l.status==='Rejected'?'●':'○';
+
+  var html=
+    '<div class="slip-company-header">'+
+      '<div class="slip-company-name">Bark Ornament Pvt Ltd</div>'+
+      '<div class="slip-company-sub">Leave Application Form</div>'+
+    '</div>'+
+    '<div class="slip-form-title">Official Leave Application</div>'+
+    '<div class="slip-ref">'+
+      '<div>Reference No: <span>'+refNo+'</span></div>'+
+      '<div>Date Issued: <span>'+new Date().toLocaleDateString('en-LK',{day:'2-digit',month:'long',year:'numeric'})+'</span></div>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Employee Information</div>'+
+      '<div class="slip-grid">'+
+        '<div class="slip-field"><div class="slip-field-label">Full Name</div><div class="slip-field-value">'+emp.name+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Employee ID</div><div class="slip-field-value">'+emp.id+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Department</div><div class="slip-field-value">'+emp.dept+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Email</div><div class="slip-field-value">'+(emp.email||'—')+'</div></div>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Leave Details</div>'+
+      '<div class="slip-grid">'+
+        '<div class="slip-field"><div class="slip-field-label">Leave Category</div><div class="slip-field-value">'+l.type+' Leave</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Total Duration</div><div class="slip-field-value">'+l.days+' Day'+(l.days!==1?'s':'')+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Commencement Date</div><div class="slip-field-value">'+fmt(l.start)+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Resumption Date</div><div class="slip-field-value">'+fmt(l.end)+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Date of Application</div><div class="slip-field-value">'+fmt(l.applied)+'</div></div>'+
+        '<div class="slip-field"><div class="slip-field-label">Current Status</div><div class="slip-field-value"><span class="slip-status-box '+statusClass+'">'+statusDot+' '+l.status+'</span></div></div>'+
+      '</div>'+
+    '</div>'+
+
+    (l.reason?
+      '<div class="slip-section">'+
+        '<div class="slip-section-title">Reason for Leave</div>'+
+        '<div class="slip-reason-box">'+l.reason+'</div>'+
+      '</div>':'')+
+
+    (l.comment?
+      '<div class="slip-section">'+
+        '<div class="slip-section-title">Management Remarks</div>'+
+        '<div class="slip-reason-box" style="border-color:#c8832a;background:#fffbf5">'+l.comment+'</div>'+
+      '</div>':'')+
+
+    '<div class="slip-section">'+
+      '<div class="slip-section-title">Authorisation &amp; Acknowledgement</div>'+
+      '<div class="slip-signatures">'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Employee Declaration</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Department Head&apos;s Endorsement</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name &amp; Designation</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+        '<div class="sig-block">'+
+          '<div class="sig-block-title">Management Authorisation</div>'+
+          '<div class="sig-line"></div>'+
+          '<div class="sig-sub-label">Signature</div>'+
+          '<div class="sig-name-line"></div>'+
+          '<div class="sig-sub-label">Name &amp; Designation</div>'+
+          '<div class="sig-date-line"></div>'+
+          '<div class="sig-sub-label">Date</div>'+
+        '</div>'+
+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('slipContent').innerHTML=html;
+  document.getElementById('slipModal').classList.add('active');
+}
+function closeSlipModal(){document.getElementById('slipModal').classList.remove('active');}
+
+function triggerSlipPrint(){
+  var content=document.getElementById('slipContent').innerHTML;
+  var printArea=document.getElementById('slipPrintArea');
+  printArea.innerHTML='<div class="leave-slip">'+content+'</div>';
+  printArea.style.display='block';
+  document.querySelectorAll('body > *:not(#slipPrintArea)').forEach(function(el){el.style.display='none';});
+  window.print();
+  document.querySelectorAll('body > *:not(#slipPrintArea)').forEach(function(el){el.style.display='';});
+  printArea.style.display='none';
+  printArea.innerHTML='';
 }
 
 /* ── EXPORT CSV ── */
@@ -628,7 +770,7 @@ function exportCSV(){
   showToast('⬇','CSV exported');
 }
 
-/* ── PRINT ── */
+/* ── PRINT DASHBOARD ── */
 function printDashboard(){
   var parts=[];
   var s=document.getElementById('filterStatus').value;
@@ -662,7 +804,6 @@ function gsSync(){
     })
     .catch(function(){/* silent — works offline */});
 }
-
 function gsPush(payload){
   if(!GS_URL)return;
   fetch(GS_URL,{
@@ -687,11 +828,8 @@ function showToast(icon,msg){
 }
 document.addEventListener('click',function(e){
   if(e.target.classList.contains('modal-overlay'))closeLeaveModal();
+  if(e.target.id==='slipModal')closeSlipModal();
 });
-  function setLeaveDays() {
-  var type = document.getElementById("leaveType").value;
-  document.getElementById("fDays").value = type;
-}
 </script>
 </body>
 </html>
