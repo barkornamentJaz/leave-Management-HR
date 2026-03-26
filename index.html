@@ -300,7 +300,14 @@ tbody tr:hover{background:#fafaf6}
     </div>
     <div class="form-group">
       <label class="form-label">Days</label>
-      <input type="number" id="fDays" step="0.25" min="0.25" placeholder="Full day = 1, Half = 0.5, Short = 0.25">
+      <select id="leaveType" onchange="setLeaveDays()">
+  <option value="">Select Leave Type</option>
+  <option value="1">Full Day</option>
+  <option value="0.5">Half Day</option>
+  <option value="0.25">Short Leave</option>
+</select>
+
+<input type="number" id="fDays" readonly placeholder="Auto-filled">
       <div class="days-preview" id="daysPreview"></div>
     </div>
     <div class="form-group">
@@ -680,6 +687,10 @@ function showToast(icon,msg){
 document.addEventListener('click',function(e){
   if(e.target.classList.contains('modal-overlay'))closeLeaveModal();
 });
+  function setLeaveDays() {
+  var type = document.getElementById("leaveType").value;
+  document.getElementById("fDays").value = type;
+}
 </script>
 </body>
 </html>
